@@ -29,6 +29,7 @@
         <style type="text/css">@import url("materialize/css/materialize.css");</style>
         <style type="text/css">@import url("materialize/css/materialize.min.css");</style>
         <style type="text/css">@import url("materialize/css/web2.css");</style>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="icon" href="java.ico">
         <title>Home</title>
     </head>
@@ -73,11 +74,11 @@
                                 </div>
                                 <div class="container">
                                     <div class="row">
-                                        <div class="col offset-m2 m4">
-                                            <input type="submit" class="btn blue-grey" value="salvar" />
+                                        <div class="col m5">
+                                            <button type="submit" class="waves-effect waves-teal btn">salvar<i class="material-icons right">save</i></button>
                                         </div>
-                                        <div class="col m4">
-                                            <a href="ClientesServlet" class="btn blue-grey">voltar</a>
+                                        <div class="col offset-m2 m5">
+                                            <a href="ClientesServlet" class="waves-effect waves-teal btn">Voltar<i class="material-icons right">arrow_back</i></a>
                                         </div>
                                     </div>
                                 </div>

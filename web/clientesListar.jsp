@@ -36,10 +36,6 @@
         <script type="text/javascript" src="materialize/js/web2.js"></script>
         <link rel="icon" href="java.ico">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <script type="text/javascript">
-            var elem = document.querySelector('.tooltipped');
-            var instance = M.Tooltip.init(elem, options);
-        </script>
         <title>Portal</title>
     </head>
     <body class="bgimg">

@@ -1,2 +1,3 @@
 # web2Crud
-Exercício 5 de web2 - CRUD
+Exercício 5 - CRUD
+Exercício 6 - MVC

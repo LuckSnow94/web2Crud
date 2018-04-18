@@ -107,7 +107,7 @@ public class ClienteDAO {
                     stmt.setString(3, cliente.getEmailCliente());
                     
                     //converter java date para sql date
-                    java.sql.Date sqlDate = new java.sql.Date(cliente.getDataCliente().getTime());
+                    java.sql.Date sqlDate = new java.sql.Date(cliente.getDateCliente().getTime());
                     
                     stmt.setDate(4, sqlDate);
                     stmt.setString(5, cliente.getRuaCliente());
@@ -133,7 +133,7 @@ public class ClienteDAO {
                 stmt.setString(3, cliente.getEmailCliente());
                     
                 //converter java date para sql date
-                java.sql.Date sqlDate = new java.sql.Date(cliente.getDataCliente().getTime());
+                java.sql.Date sqlDate = new java.sql.Date(cliente.getDateCliente().getTime());
 
                 stmt.setDate(4, sqlDate);
                 stmt.setString(5, cliente.getRuaCliente());
@@ -151,11 +151,11 @@ public class ClienteDAO {
             }
     }
 
-    public void deletarCliente(Cliente cliente) throws SQLException {
+    public void deletarCliente(int idCliente) throws SQLException {
     	con = new ConnectionFactory().getConnection();
     	stmt = con.prepareStatement("DELETE FROM tb_cliente WHERE id_cliente=?;");
         try {
-            stmt.setInt(1, cliente.getIdCliente());
+            stmt.setInt(1, idCliente);
             stmt.executeUpdate();
         } finally{
             stmt.close();

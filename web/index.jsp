@@ -3,14 +3,17 @@
     Created on : 29/03/2018, 15:08:52
     Author     : luck
 --%>
-
-<%@page import="com.mysql.jdbc.StringUtils"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%@ page import="com.mysql.jdbc.StringUtils"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page errorPage="erro.jsp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-    String mensagem = (String) request.getAttribute("msg");
+    String mensagem = request.getParameter("msg");
     if (StringUtils.isNullOrEmpty(mensagem)) {
-        mensagem = "";
+        mensagem = (String) request.getAttribute("msg");
+        if (StringUtils.isNullOrEmpty(mensagem)) {
+            mensagem = "";
+        }
     }
 %>
 <!DOCTYPE html>
@@ -42,15 +45,6 @@
                 </div>
             </div>
         </div>
-        <footer class="page-footer blue-grey footer waves-effect">
-            <div class="container">
-                <div class="row">
-                    <jsp:useBean id="configuracao" class="com.ufpr.tads.web2.beans.ConfigBean" scope="application" />
-                    <h5>
-                        Em caso de problemas contactar o administrador: <jsp:getProperty name="configuracao" property="email" />
-                    </h5>
-                </div>
-            </div>
-        </footer>
+        <%@include file="footer.jsp" %>
     </body>
 </html>

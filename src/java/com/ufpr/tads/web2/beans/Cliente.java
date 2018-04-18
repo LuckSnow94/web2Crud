@@ -6,6 +6,7 @@
 package com.ufpr.tads.web2.beans;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -79,8 +80,15 @@ public class Cliente implements Serializable{
         this.emailCliente = emailCliente;
     }
 
-    public Date getDataCliente() {
+    public Date getDateCliente(){
         return dataCliente;
+    }
+
+    public String getDataCliente() {
+        //Formatando data do bean
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd"); 
+        String data = fmt.format(this.dataCliente);
+        return data;
     }
 
     public void setDataCliente(Date dataCliente) {

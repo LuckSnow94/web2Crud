@@ -5,11 +5,14 @@
  */
 package com.ufpr.tads.web2.servlets;
 
+import com.mysql.jdbc.StringUtils;
 import com.ufpr.tads.web2.beans.Cliente;
-import com.ufpr.tads.web2.dao.ClienteDAO;
+import com.ufpr.tads.web2.facade.ClientesFacade;
 import java.io.IOException;
+import static java.lang.Integer.parseInt;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,7 +43,7 @@ public class ClientesServlet extends HttpServlet {
      * @throws java.sql.SQLException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException, SQLException {
+            throws ServletException, IOException, ClassNotFoundException, SQLException, ParseException {
         
     HttpSession session = request.getSession();
 
@@ -51,16 +54,137 @@ public class ClientesServlet extends HttpServlet {
         rd.forward(request, response);
         
     }else {
-        //Busca lista de clientes no banco de dados e retorna um List<Cliente>
-        ClienteDAO dao = new ClienteDAO();
-        List<Cliente> lista = new ArrayList();
-        lista = dao.listarClientes();
+    
+        //Início Controller
         
-        //Envia o List<Cliente> pelo request.setAttrbute("clientes", List<Cliente>)
-        RequestDispatcher rd = request.getRequestDispatcher("clientesListar.jsp");
-        request.setAttribute("lista", lista);
-        rd.forward(request, response);
-    }
+        //Variaveis de controle
+        String action = request.getParameter("action");
+        RequestDispatcher rd = null;
+        int id = 0;
+        List<Cliente> lista = null;
+        Cliente c = null;
+        
+        //Identificação da action
+        if(!StringUtils.isNullOrEmpty(action)){
+            switch(action){
+
+                //Listar clientes do banco de dados
+                case "list":
+                    lista = ClientesFacade.searchAll();
+                    rd = request.getRequestDispatcher("clientesListar.jsp");
+                    request.setAttribute("lista", lista);
+                    rd.forward(request, response);                
+                    break;
+
+                //Visualizar informações de um cliente
+                case "show":
+                    //Busca id do cliente a ser visualizado no parametro da página
+                    id = parseInt((String)request.getParameter("id"));
+                    if( id > 0){
+                        Cliente cliente = ClientesFacade.search(id);
+                        rd = request.getRequestDispatcher("clientesVisualizar.jsp");
+                        request.setAttribute("cliente", cliente);
+                        rd.forward(request, response);
+                    }
+                    break;
+
+                //Ir para tela de alteração de informações de um cliente
+                case "formUpdate":
+                    //Busca id do cliente a ser visualizado no parametro da página
+                    id = parseInt((String)request.getParameter("id"));
+                    if( id > 0){
+                        Cliente cliente = ClientesFacade.search(id);
+                        rd = request.getRequestDispatcher("clientesAlterar.jsp");
+                        request.setAttribute("cliente", cliente);
+                        rd.forward(request, response);
+                    }
+                    break;
+
+                //Remover um cliente
+                case "remove":
+                    //Busca id do cliente a ser removido no parametro da página
+                    id = parseInt((String)request.getParameter("id"));
+                    if( id > 0){
+                        ClientesFacade.delete(id);
+                        rd = request.getRequestDispatcher("ClientesServlet?action=list");
+                        rd.forward(request, response);  
+                    }
+                    break;
+
+                //Atualizar informações de um cliente
+                case "update":
+                    id = parseInt(request.getParameter("id"));
+                    if( id > 0){
+                        //Busca dados do cliente enviados pelo formulário
+                        c = new Cliente();
+                        c.setIdCliente(id);
+                        c.setNomeCliente(request.getParameter("nomeCliente"));
+                        c.setCpfCliente(request.getParameter("cpfCliente"));
+                        c.setEmailCliente(request.getParameter("emailCliente"));
+
+                        //Converter data de string para data java
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                        String data = request.getParameter("dataCliente");
+                        java.util.Date date = format.parse(data);
+
+                        c.setDataCliente(date);
+                        c.setRuaCliente(request.getParameter("ruaCliente"));
+                        c.setCepCliente(request.getParameter("cepCliente"));
+                        c.setCidadeCliente(request.getParameter("cidadeCliente"));
+                        c.setUfCliente(request.getParameter("ufCliente"));
+                        c.setNrCliente(parseInt(request.getParameter("nrCliente")));
+
+                        ClientesFacade.update(c);
+                        rd = request.getRequestDispatcher("ClientesServlet?action=list");
+                        rd.forward(request, response);
+                    }
+                    break;
+
+                //Ir para tela de inserção de um novo cliente
+                case "formNew":
+                    rd = request.getRequestDispatcher("clientesNovo.jsp");
+                    rd.forward(request, response);
+                    break;
+
+                //INserir um novo cliente
+                case "new":
+                    //Busca dados do cliente enviados pelo formulário
+                    c = new Cliente();
+                    c.setNomeCliente(request.getParameter("nomeCliente"));
+                    c.setCpfCliente(request.getParameter("cpfCliente"));
+                    c.setEmailCliente(request.getParameter("emailCliente"));
+
+                    //Converter data de string para data java
+                    String data = request.getParameter("dataCliente");
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    java.util.Date date = format.parse(data);
+                    c.setDataCliente(date);
+
+                    c.setRuaCliente(request.getParameter("ruaCliente"));
+                    c.setCepCliente(request.getParameter("cepCliente"));
+                    c.setCidadeCliente(request.getParameter("cidadeCliente"));
+                    c.setUfCliente(request.getParameter("ufCliente"));
+                    c.setNrCliente(parseInt(request.getParameter("nrCliente")));
+
+                    ClientesFacade.insert(c);
+                    rd = request.getRequestDispatcher("ClientesServlet?action=list");
+                    rd.forward(request, response);
+                    break;
+
+                default:
+                    break;
+            }            
+        }else{
+            //Por default, a controller lista os clientes
+            lista = ClientesFacade.searchAll();
+            rd = request.getRequestDispatcher("clientesListar.jsp");
+            request.setAttribute("lista", lista);
+            rd.forward(request, response);
+        }
+        
+        //Fim Controller
+        
+        }
     
     }
 
@@ -82,6 +206,8 @@ public class ClientesServlet extends HttpServlet {
             Logger.getLogger(ClientesServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(ClientesServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(ClientesServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -101,6 +227,8 @@ public class ClientesServlet extends HttpServlet {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ClientesServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
+            Logger.getLogger(ClientesServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
             Logger.getLogger(ClientesServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -6,18 +6,7 @@
 
 <%@page import="com.mysql.jdbc.StringUtils"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    String mensagem = (String) request.getAttribute("msg");
-    String link = (String) request.getAttribute("page");
-
-    if (StringUtils.isNullOrEmpty(mensagem)) {
-        mensagem = "Erro page";
-    }
-
-    if (StringUtils.isNullOrEmpty(link)) {
-        link = "index.jsp";
-    }
-%>
+<%@page isErrorPage="true" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -31,19 +20,14 @@
     <body class="bgimg">
         <div class="container">
             <div class="row bordered">
-                <h1 class="red-text"><%=mensagem%></h1>
-                <h3><p class="white-text">Para voltar à Home <a href="<%=link%>">Clique aqui</a>.</p></h3>
+                <h1 class="red-text">${exception.message}</h1>
+                <h2 class="red-text">
+                    ${pageContext.out.flush()}</br>
+                    ${exception.printStackTrace(pageContext.response.writer)}</br>
+                </h2>
+                <h3><p class="white-text">Para voltar à Home <a href="index.jsp" class="black-text pulse"><strong>Clique aqui</strong></a>.</p></h3>
             </div>
         </div>
-        <footer class="page-footer blue-grey footer waves-effect">
-            <div class="container">
-                <div class="row">
-                    <jsp:useBean id="configuracao" class="com.ufpr.tads.web2.beans.ConfigBean" scope="application" />
-                    <h5>
-                        Em caso de problemas contactar o administrador: <jsp:getProperty name="configuracao" property="email" />
-                    </h5>
-                </div>
-            </div>
-        </footer>
+<%@include file="footer.jsp" %>
     </body>
 </html>

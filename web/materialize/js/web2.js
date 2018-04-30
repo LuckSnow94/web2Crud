@@ -10,3 +10,9 @@ function cpf_mask(v){
     v=v.replace(/(\d)(\d)/,"$1-$2"); //Coloca ponto entre o decimoprimeiro e o decimosegundo dígitos
     return v;
 }
+
+function confirmar(link, id) {
+     if (confirm("Deseja remover esse cliente?")) {
+          link.href = "ClientesServlet?action=remove&id="+id;
+      }
+}

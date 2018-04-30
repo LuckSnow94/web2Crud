@@ -6,6 +6,8 @@
 package com.ufpr.tads.web2.facade;
 
 import com.ufpr.tads.web2.beans.Cliente;
+import com.ufpr.tads.web2.beans.Estado;
+import com.ufpr.tads.web2.dao.CidadeEstadoDAO;
 import com.ufpr.tads.web2.dao.ClienteDAO;
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -19,6 +21,13 @@ import java.util.logging.Logger;
  * @author luck
  */
 public class ClientesFacade implements Serializable{
+    
+    public static List<Estado> listarEstados() throws ClassNotFoundException, SQLException{
+        // Vai no BD buscar todas as cidades deste estado, em uma lista
+        CidadeEstadoDAO dao = new CidadeEstadoDAO();
+        List<Estado> estados = dao.listarEstados();
+        return estados;
+    }
     
     public static List<Cliente> searchAll(){
         //Busca lista de clientes no banco de dados e retorna um List<Cliente>

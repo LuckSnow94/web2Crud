@@ -30,7 +30,7 @@ public class Cliente implements Serializable{
     
     public Cliente(int idCliente, String cpfCliente, String nomeCliente, String emailCliente) {
         this.idCliente = idCliente;
-        this.cpfCliente = cpfCliente;
+        this.cpfCliente = cpfCliente.substring(0,3) + "." + cpfCliente.substring(3, 6) + "." + cpfCliente.substring(6, 9) + "-" + cpfCliente.substring(9, 11);
         this.nomeCliente = nomeCliente;
         this.emailCliente = emailCliente;
     }

@@ -15,11 +15,14 @@
 <%@page import="com.mysql.jdbc.StringUtils"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page errorPage="erro.jsp" %>
-<%    /*Procura se existe um usuário instanciado*/  if (pageContext.findAttribute("user") == null) { %>
+<%-- Procura se existe um usuário instanciado --%>
+<c:choose>
+<c:when test="${empty sessionScope.user}">
 <jsp:forward page="index.jsp">
     <jsp:param name="msg" value="Usuário deve se autenticar para acessar o sistema." />
 </jsp:forward>
-<% } %>
+</c:when>
+    <c:otherwise>
 <!DOCTYPE html>
 <html>
     <head>
@@ -35,7 +38,7 @@
     <body class="bgimg">
         <div class="container">
             <div class="row">
-                <div class="col offset-m2 m8">
+                <div class="col m12">
                     <h1 class="white-text">@Portal</h1>
                     <h2 class="white-text">Olá, ${user.nome}</h2>
                     <div class="divider"></div>
@@ -63,7 +66,7 @@
                                 <td class="center-align" style="width: 220px;">
                                 <a href="ClientesServlet?action=show&id=${aux.idCliente}" class="btn-floating pulse green opt"><i class="small material-icons white-text">visibility</i></a>
                                 <a href="ClientesServlet?action=formUpdate&id=${aux.idCliente}" class="btn-floating pulse yellow opt"><i class="small material-icons white-text">edit</i></a>
-                                <a href="ClientesServlet?action=remove&id=${aux.idCliente}" class="btn-floating pulse red opt"><i class="small material-icons white-text">delete</i></a>
+                                <a href="" onclick="confirmar(this,${aux.idCliente});" class="btn-floating pulse red opt"><i class="small material-icons white-text">delete</i></a>
                                 </td></tr>
                             </c:forEach>
                         </tbody>
@@ -74,7 +77,7 @@
                             <div class="col left-align">
                                 <a href="ClientesServlet?action=formNew" class="waves-effect waves-teal btn">Novo<i class="material-icons right">add</i></a>                                
                             </div>
-                            <div class="col offset-s3">
+                            <div class="col offset-s6">
                                 <a href="portal.jsp" class="waves-effect waves-teal btn">Voltar<i class="material-icons right">arrow_back</i></a>                                
                             </div>
                         </div>
@@ -86,4 +89,5 @@
                     <%@include file="footer.jsp" %>
     </body>
 </html>
-
+    </c:otherwise>    
+</c:choose>

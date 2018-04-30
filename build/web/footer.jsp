@@ -7,7 +7,7 @@
     <div class="container">
         <div class="row">
             <h5>
-                Em caso de problemas contactar o administrador: ${configuracao.email}
+                Em caso de problemas contactar o administrador: <c:out value="${applicationScope.configuracao.email}" />
             </h5>
         </div>
     </div>

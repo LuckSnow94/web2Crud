@@ -7,15 +7,6 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page errorPage="erro.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
-    String mensagem = request.getParameter("msg");
-    if (StringUtils.isNullOrEmpty(mensagem)) {
-        mensagem = (String) request.getAttribute("msg");
-        if (StringUtils.isNullOrEmpty(mensagem)) {
-            mensagem = "";
-        }
-    }
-%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -39,7 +30,11 @@
                                 Senha: <input type="password" name="senha" value=""/><br/>
                                 <input type="submit" value="entrar" class="btn blue-grey">
                             </form>
-                            <h5></br><div class="red-text"><%=mensagem%></div></h5>
+                            <h5></br>
+                                <div class="red-text">
+                                    <c:out value="${ (empty requestScope.msg) ? ((empty param.msg) ? '' : param.msg): requestScope.msg }" />
+                                </div>
+                            </h5>
                         </div>
                     </div>
                 </div>

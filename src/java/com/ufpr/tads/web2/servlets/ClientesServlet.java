@@ -7,29 +7,29 @@ package com.ufpr.tads.web2.servlets;
 
 import com.mysql.jdbc.StringUtils;
 import com.ufpr.tads.web2.beans.Cliente;
+import com.ufpr.tads.web2.beans.Estado;
 import com.ufpr.tads.web2.facade.ClientesFacade;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import static java.lang.Integer.parseInt;
 
 /**
  *
  * @author luck
  */
 @WebServlet(name = "ClientesServlet", urlPatterns = {"/ClientesServlet"})
-public class ClientesServlet extends HttpServlet {
+public class ClientesServlet extends BeanServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,7 +41,9 @@ public class ClientesServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      * @throws java.lang.ClassNotFoundException
      * @throws java.sql.SQLException
+     * @throws java.text.ParseException
      */
+    @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ClassNotFoundException, SQLException, ParseException {
         
@@ -82,7 +84,11 @@ public class ClientesServlet extends HttpServlet {
                     id = parseInt((String)request.getParameter("id"));
                     if( id > 0){
                         Cliente cliente = ClientesFacade.search(id);
-                        rd = request.getRequestDispatcher("clientesVisualizar.jsp");
+                        //Carregar lista de estados
+                        List<Estado> estados = ClientesFacade.listarEstados();
+                        rd = request.getRequestDispatcher("clientesForm.jsp");
+                        request.setAttribute("estados", estados);
+                        request.setAttribute("visualizar", true);
                         request.setAttribute("cliente", cliente);
                         rd.forward(request, response);
                     }
@@ -94,7 +100,13 @@ public class ClientesServlet extends HttpServlet {
                     id = parseInt((String)request.getParameter("id"));
                     if( id > 0){
                         Cliente cliente = ClientesFacade.search(id);
-                        rd = request.getRequestDispatcher("clientesAlterar.jsp");
+                        
+                        //Carregar lista de estados
+                        List<Estado> estados = ClientesFacade.listarEstados();
+                    
+                        rd = request.getRequestDispatcher("clientesForm.jsp");
+                        request.setAttribute("estados", estados);
+                        request.setAttribute("alterar", true);
                         request.setAttribute("cliente", cliente);
                         rd.forward(request, response);
                     }
@@ -113,59 +125,27 @@ public class ClientesServlet extends HttpServlet {
 
                 //Atualizar informações de um cliente
                 case "update":
-                    id = parseInt(request.getParameter("id"));
-                    if( id > 0){
-                        //Busca dados do cliente enviados pelo formulário
-                        c = new Cliente();
-                        c.setIdCliente(id);
-                        c.setNomeCliente(request.getParameter("nomeCliente"));
-                        c.setCpfCliente(request.getParameter("cpfCliente"));
-                        c.setEmailCliente(request.getParameter("emailCliente"));
-
-                        //Converter data de string para data java
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                        String data = request.getParameter("dataCliente");
-                        java.util.Date date = format.parse(data);
-
-                        c.setDataCliente(date);
-                        c.setRuaCliente(request.getParameter("ruaCliente"));
-                        c.setCepCliente(request.getParameter("cepCliente"));
-                        c.setCidadeCliente(request.getParameter("cidadeCliente"));
-                        c.setUfCliente(request.getParameter("ufCliente"));
-                        c.setNrCliente(parseInt(request.getParameter("nrCliente")));
-
-                        ClientesFacade.update(c);
-                        rd = request.getRequestDispatcher("ClientesServlet?action=list");
-                        rd.forward(request, response);
-                    }
+                    //Preencher dados do cliente no enviados pelo formulário
+                    c = super.fillCliente(request);
+                    ClientesFacade.update(c);
+                    rd = request.getRequestDispatcher("ClientesServlet?action=list");
+                    rd.forward(request, response);
                     break;
 
                 //Ir para tela de inserção de um novo cliente
                 case "formNew":
-                    rd = request.getRequestDispatcher("clientesNovo.jsp");
+                    //Carregar lista de estados
+                    List<Estado> estados = ClientesFacade.listarEstados();
+                    
+                    rd = request.getRequestDispatcher("clientesForm.jsp");
+                    request.setAttribute("estados", estados);
                     rd.forward(request, response);
                     break;
 
                 //INserir um novo cliente
                 case "new":
-                    //Busca dados do cliente enviados pelo formulário
-                    c = new Cliente();
-                    c.setNomeCliente(request.getParameter("nomeCliente"));
-                    c.setCpfCliente(request.getParameter("cpfCliente"));
-                    c.setEmailCliente(request.getParameter("emailCliente"));
-
-                    //Converter data de string para data java
-                    String data = request.getParameter("dataCliente");
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                    java.util.Date date = format.parse(data);
-                    c.setDataCliente(date);
-
-                    c.setRuaCliente(request.getParameter("ruaCliente"));
-                    c.setCepCliente(request.getParameter("cepCliente"));
-                    c.setCidadeCliente(request.getParameter("cidadeCliente"));
-                    c.setUfCliente(request.getParameter("ufCliente"));
-                    c.setNrCliente(parseInt(request.getParameter("nrCliente")));
-
+                    //Preencher dados do cliente no enviados pelo formulário
+                    c = super.fillCliente(request);
                     ClientesFacade.insert(c);
                     rd = request.getRequestDispatcher("ClientesServlet?action=list");
                     rd.forward(request, response);

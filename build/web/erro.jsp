@@ -6,6 +6,7 @@
 
 <%@page import="com.mysql.jdbc.StringUtils"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page isErrorPage="true" %>
 <!DOCTYPE html>
 <html>
@@ -20,10 +21,11 @@
     <body class="bgimg">
         <div class="container">
             <div class="row bordered">
-                <h1 class="red-text">${exception.message}</h1>
+                <h1 class="red-text">
+                    <c:out value="${exception.message}" /></h1>
                 <h2 class="red-text">
-                    ${pageContext.out.flush()}</br>
-                    ${exception.printStackTrace(pageContext.response.writer)}</br>
+                    <c:out value="${pageContext.out.flush()}" /></br>
+                    <c:out value="${exception.printStackTrace(pageContext.response.writer)}" /></br>
                 </h2>
                 <h3><p class="white-text">Para voltar à Home <a href="index.jsp" class="black-text pulse"><strong>Clique aqui</strong></a>.</p></h3>
             </div>
@@ -31,3 +33,4 @@
 <%@include file="footer.jsp" %>
     </body>
 </html>
+'

@@ -4,15 +4,19 @@
     Author     : luck
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="com.ufpr.tads.web2.beans.LoginBean"%>
 <%@page import="com.mysql.jdbc.StringUtils"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page errorPage="erro.jsp" %>
-<%    /*Procura se existe um usuário instanciado*/  if (pageContext.findAttribute("user") == null) { %>
+<%-- Procura se existe um usuário instanciado --%>
+<c:choose>
+<c:when test="${empty sessionScope.user}">
 <jsp:forward page="index.jsp">
     <jsp:param name="msg" value="Usuário deve se autenticar para acessar o sistema." />
 </jsp:forward>
-<% } %>
+</c:when>
+    <c:otherwise>
 <!DOCTYPE html>
 <html>
     <head>
@@ -41,4 +45,6 @@
         </div>
 <%@include file="footer.jsp" %>
     </body>
-</html>
+</html>        
+    </c:otherwise>    
+</c:choose>

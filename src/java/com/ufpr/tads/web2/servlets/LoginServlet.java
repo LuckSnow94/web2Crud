@@ -10,6 +10,9 @@ import com.ufpr.tads.web2.beans.LoginBean;
 import com.ufpr.tads.web2.beans.Usuario;
 import com.ufpr.tads.web2.dao.UsuarioDAO;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,7 +46,8 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException, ClassNotFoundException, SQLException {
         
             UsuarioDAO dao = new UsuarioDAO();
-            Usuario p = dao.verificaLogin((String)request.getParameter("login"), (String)request.getParameter("senha"));
+            String psw = md5(request.getParameter("senha"));
+            Usuario p = dao.verificaLogin(request.getParameter("login"),psw);
             
             if(!StringUtils.isNullOrEmpty(p.getNome())){
                 LoginBean user = new LoginBean(p.getId() ,p.getNome().toUpperCase() );
@@ -57,6 +61,19 @@ public class LoginServlet extends HttpServlet {
                 rd.forward(request, response);
             }
     }
+    
+    public static String md5(String senha){
+		String psw = "";
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		BigInteger hash = new BigInteger(1, md.digest(senha.getBytes()));
+		psw = hash.toString(16);			
+		return psw;
+	}
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

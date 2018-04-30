@@ -39,22 +39,7 @@ public class ClienteDAO {
             stmt = con.prepareStatement("SELECT * FROM tb_cliente;");
             rs = stmt.executeQuery();
             while(rs.next()){
-                Cliente aux =  new Cliente();
-                aux.setIdCliente(rs.getInt(1));
-                aux.setCpfCliente(rs.getString(2));
-                aux.setNomeCliente(rs.getString(3));
-                aux.setEmailCliente(rs.getString(4));
-                
-                //converter sql date para java date 
-//                java.sql.Date sqlDate = rs.getDate(5);
-//                java.util.Date utilDate = new java.util.Date(sqlDate.getTime());
-//                
-//                aux.setDataCliente(utilDate);
-//                aux.setRuaCliente(rs.getString(6));
-//                aux.setNrCliente(rs.getInt(7));
-//                aux.setCepCliente(rs.getString(8));
-//                aux.setCidadeCliente(rs.getString(9));
-//                aux.setUfCliente(rs.getString(10));
+                Cliente aux =  new Cliente(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4));
                 lista.add(aux);
             }
             rs.close();

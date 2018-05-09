@@ -24,6 +24,7 @@ public class ConnectionFactory {
     public Connection getConnection() {
         try {
             Class.forName(dbDriver);
+            DriverManager.registerDriver(new dbDriver());
             return DriverManager.getConnection(dbUrl, dbUser, dbPwd);
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.beans.Beans"%>
-<%@page import="com.mysql.jdbc.StringUtils"%>
+<%@page import="com.mysql.cj.util.StringUtils"%>
 <%@page errorPage="erro.jsp" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>

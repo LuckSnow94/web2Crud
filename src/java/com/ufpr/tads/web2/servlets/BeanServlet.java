@@ -5,7 +5,7 @@
  */
 package com.ufpr.tads.web2.servlets;
 
-import com.mysql.jdbc.StringUtils;
+import com.mysql.cj.util.StringUtils;
 import com.ufpr.tads.web2.beans.Cliente;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;

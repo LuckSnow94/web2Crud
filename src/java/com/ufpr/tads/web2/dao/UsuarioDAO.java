@@ -24,7 +24,7 @@ public class UsuarioDAO {
     public UsuarioDAO() {
     }
     
-    public Usuario verificaLogin(String login, String senha) throws ClassNotFoundException, SQLException, IOException{
+    public Usuario verificaLogin(String login, String senha) throws ClassNotFoundException, SQLException, IOException, InstantiationException, IllegalAccessException{
         
         Usuario p = new Usuario();
         

@@ -5,9 +5,10 @@
  */
 package com.ufpr.tads.web2.dao;
 
+import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Connection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,7 +25,7 @@ public class ConnectionFactory {
             
     public Connection getConnection() throws InstantiationException, IllegalAccessException {
         try {
-            DriverManager.deregisterDriver((Driver) Class.forName(dbDriver).newInstance());
+            DriverManager.registerDriver((Driver) Class.forName(dbDriver).newInstance());
             return DriverManager.getConnection(dbUrl, dbUser, dbPwd);
         } catch (SQLException ex) {
         	System.out.println("SQLException: " + ex.getMessage());

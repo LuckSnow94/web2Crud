@@ -29,7 +29,7 @@ public class ClienteDAO {
     public ClienteDAO() {
     }
     
-    public List<Cliente> listarClientes() throws ClassNotFoundException, SQLException{
+    public List<Cliente> listarClientes() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
         
         List<Cliente> lista;
         lista = new ArrayList();
@@ -83,7 +83,7 @@ public class ClienteDAO {
             return aux;
     }
     
-    public void adicionarCliente(Cliente cliente) {
+    public void adicionarCliente(Cliente cliente) throws InstantiationException, IllegalAccessException {
             try {
                     con = new ConnectionFactory().getConnection();
                     stmt = con.prepareStatement(insert);
@@ -136,7 +136,7 @@ public class ClienteDAO {
             }
     }
 
-    public void deletarCliente(int idCliente) throws SQLException {
+    public void deletarCliente(int idCliente) throws SQLException, InstantiationException, IllegalAccessException {
     	con = new ConnectionFactory().getConnection();
     	stmt = con.prepareStatement("DELETE FROM tb_cliente WHERE id_cliente=?;");
         try {

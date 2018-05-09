@@ -4,7 +4,8 @@
     Author     : luck
 --%>
 
-<%@page import="com.mysql.jdbc.StringUtils"%>
+<%@page import="com.mysql.cj.util.StringUtils"%>
+<%@page import="javax.servlet.jsp.PageContext" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page isErrorPage="true" %>
@@ -24,13 +25,12 @@
                 <h1 class="red-text">
                     <c:out value="${exception.message}" /></h1>
                 <h2 class="red-text">
-                    <c:out value="${pageContext.out.flush()}" /></br>
-                    <c:out value="${exception.printStackTrace(pageContext.response.writer)}" /></br>
+                    <c:out value="${pageContext.out()}" /><br/>
+                    <c:out value="${exception.printStackTrace(pageContext.response.writer)}" /><br/>
                 </h2>
-                <h3><p class="white-text">Para voltar à Home <a href="index.jsp" class="black-text pulse"><strong>Clique aqui</strong></a>.</p></h3>
+                <h3 class="white-text">Para voltar à Home <a href="index.jsp" class="black-text pulse"><strong>Clique aqui</strong></a>.</h3>
             </div>
         </div>
 <%@include file="footer.jsp" %>
     </body>
 </html>
-'

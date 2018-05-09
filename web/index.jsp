@@ -3,7 +3,7 @@
     Created on : 29/03/2018, 15:08:52
     Author     : luck
 --%>
-<%@ page import="com.mysql.jdbc.StringUtils"%>
+<%@ page import="com.mysql.cj.util.StringUtils"%>
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page errorPage="erro.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

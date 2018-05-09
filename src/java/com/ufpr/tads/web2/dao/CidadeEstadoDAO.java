@@ -24,7 +24,7 @@ public class CidadeEstadoDAO {
     PreparedStatement stmt = null;
     ResultSet rs = null;
     
-    public List<Estado> listarEstados() throws ClassNotFoundException, SQLException{
+    public List<Estado> listarEstados() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
         
         List<Estado> estados;
         estados = new ArrayList();
@@ -46,7 +46,7 @@ public class CidadeEstadoDAO {
         }                 
     }
     
-    public List<Cidade> listarCidades(int idEstado) throws ClassNotFoundException, SQLException{
+    public List<Cidade> listarCidades(int idEstado) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
         
         List<Cidade> cidades;
         cidades = new ArrayList();

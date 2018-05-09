@@ -44,14 +44,23 @@ public class AJAXServlet extends HttpServlet {
         
             // Vai no BD buscar todas as cidades deste estado, em uma lista
             CidadeEstadoDAO dao = new CidadeEstadoDAO();
-            List<Cidade> cidades = dao.listarCidades(idEstado);
+            List<Cidade> cidades;
+			try {
+				cidades = dao.listarCidades(idEstado);
+				String json = new Gson().toJson(cidades);
+				// retorna o JSON
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(json);
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             
             // transforma o MAP em JSON
-            String json = new Gson().toJson(cidades);
-            // retorna o JSON
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(json);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -5,7 +5,7 @@
  */
 package com.ufpr.tads.web2.servlets;
 
-import com.mysql.jdbc.StringUtils;
+import com.mysql.cj.util.StringUtils;
 import com.ufpr.tads.web2.beans.Cliente;
 import com.ufpr.tads.web2.beans.Estado;
 import com.ufpr.tads.web2.facade.ClientesFacade;
@@ -72,7 +72,15 @@ public class ClientesServlet extends BeanServlet {
 
                 //Listar clientes do banco de dados
                 case "list":
-                    lista = ClientesFacade.searchAll();
+				try {
+					lista = ClientesFacade.searchAll();
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
                     rd = request.getRequestDispatcher("clientesListar.jsp");
                     request.setAttribute("lista", lista);
                     rd.forward(request, response);                
@@ -85,12 +93,21 @@ public class ClientesServlet extends BeanServlet {
                     if( id > 0){
                         Cliente cliente = ClientesFacade.search(id);
                         //Carregar lista de estados
-                        List<Estado> estados = ClientesFacade.listarEstados();
-                        rd = request.getRequestDispatcher("clientesForm.jsp");
-                        request.setAttribute("estados", estados);
-                        request.setAttribute("visualizar", true);
-                        request.setAttribute("cliente", cliente);
-                        rd.forward(request, response);
+                        List<Estado> estados;
+						try {
+							estados = ClientesFacade.listarEstados();
+							rd = request.getRequestDispatcher("clientesForm.jsp");
+							request.setAttribute("estados", estados);
+							request.setAttribute("visualizar", true);
+							request.setAttribute("cliente", cliente);
+							rd.forward(request, response);
+						} catch (InstantiationException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IllegalAccessException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
                     }
                     break;
 
@@ -102,13 +119,21 @@ public class ClientesServlet extends BeanServlet {
                         Cliente cliente = ClientesFacade.search(id);
                         
                         //Carregar lista de estados
-                        List<Estado> estados = ClientesFacade.listarEstados();
-                    
-                        rd = request.getRequestDispatcher("clientesForm.jsp");
-                        request.setAttribute("estados", estados);
-                        request.setAttribute("alterar", true);
-                        request.setAttribute("cliente", cliente);
-                        rd.forward(request, response);
+                        List<Estado> estados;
+						try {
+							estados = ClientesFacade.listarEstados();
+							rd = request.getRequestDispatcher("clientesForm.jsp");
+							request.setAttribute("estados", estados);
+							request.setAttribute("alterar", true);
+							request.setAttribute("cliente", cliente);
+							rd.forward(request, response);
+						} catch (InstantiationException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IllegalAccessException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}                    
                     }
                     break;
 
@@ -117,7 +142,15 @@ public class ClientesServlet extends BeanServlet {
                     //Busca id do cliente a ser removido no parametro da página
                     id = parseInt((String)request.getParameter("id"));
                     if( id > 0){
-                        ClientesFacade.delete(id);
+                        try {
+							ClientesFacade.delete(id);
+						} catch (InstantiationException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IllegalAccessException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
                         rd = request.getRequestDispatcher("ClientesServlet?action=list");
                         rd.forward(request, response);  
                     }
@@ -135,18 +168,35 @@ public class ClientesServlet extends BeanServlet {
                 //Ir para tela de inserção de um novo cliente
                 case "formNew":
                     //Carregar lista de estados
-                    List<Estado> estados = ClientesFacade.listarEstados();
+				List<Estado> estados;
+				try {
+					estados = ClientesFacade.listarEstados();
+					rd = request.getRequestDispatcher("clientesForm.jsp");
+					request.setAttribute("estados", estados);
+					rd.forward(request, response);
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
                     
-                    rd = request.getRequestDispatcher("clientesForm.jsp");
-                    request.setAttribute("estados", estados);
-                    rd.forward(request, response);
                     break;
 
                 //INserir um novo cliente
                 case "new":
                     //Preencher dados do cliente no enviados pelo formulário
                     c = super.fillCliente(request);
-                    ClientesFacade.insert(c);
+				try {
+					ClientesFacade.insert(c);
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
                     rd = request.getRequestDispatcher("ClientesServlet?action=list");
                     rd.forward(request, response);
                     break;
@@ -156,7 +206,15 @@ public class ClientesServlet extends BeanServlet {
             }            
         }else{
             //Por default, a controller lista os clientes
-            lista = ClientesFacade.searchAll();
+            try {
+				lista = ClientesFacade.searchAll();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             rd = request.getRequestDispatcher("clientesListar.jsp");
             request.setAttribute("lista", lista);
             rd.forward(request, response);

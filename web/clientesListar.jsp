@@ -12,7 +12,7 @@
 <%@page import="com.ufpr.tads.web2.beans.Cliente"%>
 <%@page import="java.util.List"%>
 <%@page import="com.ufpr.tads.web2.beans.LoginBean"%>
-<%@page import="com.mysql.jdbc.StringUtils"%>
+<%@page import="com.mysql.cj.util.StringUtils"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page errorPage="erro.jsp" %>
 <%-- Procura se existe um usuário instanciado --%>

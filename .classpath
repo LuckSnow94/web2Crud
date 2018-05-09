@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src/java"/>
+	<classpathentry kind="lib" path="build/web/WEB-INF/lib/gson-2.8.2.jar"/>
+	<classpathentry kind="lib" path="build/web/WEB-INF/lib/jstl-api.jar"/>
+	<classpathentry kind="lib" path="build/web/WEB-INF/lib/jstl-impl.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector J 8.0/mysql-connector-java-8.0.11.jar"/>
+	<classpathentry kind="lib" path="C:/Users/lka19/Documents/Tools Dev JavaWEB/glassfish-4.1.zip"/>
+	<classpathentry kind="lib" path="C:/Program Files/Apache Software Foundation/Apache Tomcat 8.0.27/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Apache Software Foundation/Apache Tomcat 8.0.27/lib/jsp-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/lka19/Documents/Tools Dev JavaWEB/jsf-impl-2.2.12.jar"/>
+	<classpathentry kind="output" path="build/web/WEB-INF/classes"/>
+</classpath>

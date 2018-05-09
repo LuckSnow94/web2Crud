@@ -5,7 +5,7 @@
  */
 package com.ufpr.tads.web2.servlets;
 
-import com.mysql.jdbc.StringUtils;
+import com.mysql.cj.util.StringUtils;
 import com.ufpr.tads.web2.beans.LoginBean;
 import com.ufpr.tads.web2.beans.Usuario;
 import com.ufpr.tads.web2.dao.UsuarioDAO;
@@ -47,19 +47,27 @@ public class LoginServlet extends HttpServlet {
         
             UsuarioDAO dao = new UsuarioDAO();
             String psw = md5(request.getParameter("senha"));
-            Usuario p = dao.verificaLogin(request.getParameter("login"),psw);
-            
-            if(!StringUtils.isNullOrEmpty(p.getNome())){
-                LoginBean user = new LoginBean(p.getId() ,p.getNome().toUpperCase() );
-                HttpSession session = request.getSession();
-                session.setAttribute("user", user);
-                response.sendRedirect("portal.jsp");
-            }
-            else{
-                RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-                request.setAttribute("msg", "Usuário/Senha inválidos.");
-                rd.forward(request, response);
-            }
+            Usuario p;
+			try {
+				p = dao.verificaLogin(request.getParameter("login"),psw);				
+				if(!StringUtils.isNullOrEmpty(p.getNome())){
+					LoginBean user = new LoginBean(p.getId() ,p.getNome().toUpperCase() );
+					HttpSession session = request.getSession();
+					session.setAttribute("user", user);
+					response.sendRedirect("portal.jsp");
+				}
+				else{
+					RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+					request.setAttribute("msg", "Usuário/Senha inválidos.");
+					rd.forward(request, response);
+				}
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     }
     
     public static String md5(String senha){

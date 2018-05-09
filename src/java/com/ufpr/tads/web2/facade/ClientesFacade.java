@@ -22,14 +22,14 @@ import java.util.logging.Logger;
  */
 public class ClientesFacade implements Serializable{
     
-    public static List<Estado> listarEstados() throws ClassNotFoundException, SQLException{
+    public static List<Estado> listarEstados() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
         // Vai no BD buscar todas as cidades deste estado, em uma lista
         CidadeEstadoDAO dao = new CidadeEstadoDAO();
         List<Estado> estados = dao.listarEstados();
         return estados;
     }
     
-    public static List<Cliente> searchAll(){
+    public static List<Cliente> searchAll() throws InstantiationException, IllegalAccessException{
         //Busca lista de clientes no banco de dados e retorna um List<Cliente>
         ClienteDAO dao = new ClienteDAO();
         List<Cliente> lista = new ArrayList();
@@ -48,7 +48,7 @@ public class ClientesFacade implements Serializable{
         return c;
     }
     
-    public static void insert(Cliente c){
+    public static void insert(Cliente c) throws InstantiationException, IllegalAccessException{
         ClienteDAO dao = new ClienteDAO();
         dao.adicionarCliente(c);        
     }
@@ -58,7 +58,7 @@ public class ClientesFacade implements Serializable{
         dao.alterarCliente(c);
     }
     
-    public static void delete(int id){
+    public static void delete(int id) throws InstantiationException, IllegalAccessException{
         try {
             //Busca cliente no banco de dados e deleta do banco de dados
             ClienteDAO dao = new ClienteDAO();        

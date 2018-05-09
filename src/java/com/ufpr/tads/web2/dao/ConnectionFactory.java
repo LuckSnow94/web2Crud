@@ -21,10 +21,9 @@ public class ConnectionFactory {
     private final String dbUser = "root";
     private final String dbPwd = "luck";
             
-    public Connection getConnection() {
+    public Connection getConnection() throws InstantiationException, IllegalAccessException {
         try {
-            Class.forName(dbDriver);
-            DriverManager.registerDriver(new dbDriver());
+            DriverManager.registerDriver((Driver) Class.forName(dbDriver).newInstance());
             return DriverManager.getConnection(dbUrl, dbUser, dbPwd);
         } catch (SQLException e) {
             throw new RuntimeException(e);

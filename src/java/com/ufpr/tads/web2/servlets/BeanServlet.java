@@ -47,7 +47,7 @@ public class BeanServlet extends HttpServlet {
         c.setCpfCliente(pRequest.getParameter("cpfCliente"));
         c.setEmailCliente(pRequest.getParameter("emailCliente"));
         
-        int id = parseInt(pRequest.getParameter("id"));
+        int id = Integer.parseInt(pRequest.getParameter("id"));
         if(id == 0){
             c.setIdCliente(id);
         }

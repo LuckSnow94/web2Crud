@@ -46,11 +46,6 @@ public class BeanServlet extends HttpServlet {
         c.setNomeCliente(pRequest.getParameter("nomeCliente"));
         c.setCpfCliente(pRequest.getParameter("cpfCliente"));
         c.setEmailCliente(pRequest.getParameter("emailCliente"));
-        
-        int id = Integer.parseInt(pRequest.getParameter("id"));
-        if(id == 0){
-            c.setIdCliente(id);
-        }
         String data = pRequest.getParameter("dataCliente");
         if(!StringUtils.isNullOrEmpty(data)){
             //Converter data de string para data java

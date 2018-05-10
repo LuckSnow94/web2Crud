@@ -31,8 +31,7 @@ public class ClienteDAO {
     
     public List<Cliente> listarClientes() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
         
-        List<Cliente> lista;
-        lista = new ArrayList();
+        List<Cliente> lista = new ArrayList<Cliente>();
 
         try {
             con = new ConnectionFactory().getConnection();
@@ -72,7 +71,7 @@ public class ClienteDAO {
                     aux.setRuaCliente(rs.getString(6));
                     aux.setNrCliente(rs.getInt(7));
                     aux.setCepCliente(rs.getString(8));
-                    aux.setCidadeCliente(rs.getString(9));
+                    aux.setCidadeCliente(rs.getInt(9));
                     aux.setUfCliente(rs.getString(10));
                     }
             }catch (Exception e) {
@@ -98,7 +97,7 @@ public class ClienteDAO {
                     stmt.setString(5, cliente.getRuaCliente());
                     stmt.setInt(6, cliente.getNrCliente());
                     stmt.setString(7, cliente.getCepCliente());
-                    stmt.setString(8, cliente.getCidadeCliente());
+                    stmt.setInt(8, cliente.getCidadeCliente());
                     stmt.setString(9, cliente.getUfCliente());
                     stmt.execute();
                     stmt.close();
@@ -124,7 +123,7 @@ public class ClienteDAO {
                 stmt.setString(5, cliente.getRuaCliente());
                 stmt.setInt(6, cliente.getNrCliente());
                 stmt.setString(7, cliente.getCepCliente());
-                stmt.setString(8, cliente.getCidadeCliente());
+                stmt.setInt(8, cliente.getCidadeCliente());
                 stmt.setString(9, cliente.getUfCliente());
                 stmt.setInt(10, cliente.getIdCliente());
                 stmt.executeUpdate();

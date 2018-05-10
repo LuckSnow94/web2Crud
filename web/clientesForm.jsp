@@ -54,7 +54,7 @@
                         // alert(JSON.stringify(data));
                         $("#cidade").empty();
                         $.each(data, function (i, obj) {
-                            $("#cidade").append('<option value=' + obj.nomeCidade + '>' + obj.nomeCidade +
+                            $("#cidade").append('<option value=' + obj.idCidade + '>' + obj.nomeCidade +
                                     '</option>');
                         });
                     },
@@ -214,7 +214,8 @@
 											value="<c:out value="${cliente.cepCliente}"/>" />
 									</div>
 									<div class="col m4">
-										<label>Estado:</label> <select name="ufCliente" id="estado"
+										<label>Estado:</label> 
+										<select name="ufCliente" id="estado"
 											class="browser-default" disabled="true">
 											<option><c:out value="${cliente.ufCliente}" /></option>
 											<c:forEach items="${estados}" var="estado">
@@ -242,7 +243,16 @@
 					</div>
 				</div>
 				<div style="height: 100px;"></div>
-			</div>
+			</div>]
+			<script type="text/javascript">
+				
+				$(document).ready(function () {
+	                $("#cidade").change(function () {
+	                    getEstadoCliente();
+	                });
+	            });
+				
+			</script>
 	</c:when>
 	<c:otherwise>
 		<title>Novo</title>

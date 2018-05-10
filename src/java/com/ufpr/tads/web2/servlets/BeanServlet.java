@@ -61,8 +61,8 @@ public class BeanServlet extends HttpServlet {
         if(!StringUtils.isNullOrEmpty(cepCliente)){
             c.setCepCliente(cepCliente);                        
         }
-        String cidadeCliente = pRequest.getParameter("cidadeCliente");
-        if(!StringUtils.isNullOrEmpty(cidadeCliente)){
+        int cidadeCliente = Integer.parseInt(pRequest.getParameter("cidadeCliente"));
+        if(cidadeCliente > 0){
             c.setCidadeCliente(cidadeCliente);                        
         }                    
         String ufCliente = pRequest.getParameter("ufCliente");

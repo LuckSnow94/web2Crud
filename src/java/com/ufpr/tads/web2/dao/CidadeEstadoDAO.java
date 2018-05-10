@@ -26,8 +26,7 @@ public class CidadeEstadoDAO {
     
     public List<Estado> listarEstados() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
         
-        List<Estado> estados;
-        estados = new ArrayList();
+        List<Estado> estados = new ArrayList<Estado>();
 
         try {
             con = new ConnectionFactory().getConnection();
@@ -48,8 +47,7 @@ public class CidadeEstadoDAO {
     
     public List<Cidade> listarCidades(int idEstado) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException{
         
-        List<Cidade> cidades;
-        cidades = new ArrayList();
+        List<Cidade> cidades = new ArrayList<Cidade>();
 
         try {
             con = new ConnectionFactory().getConnection();

@@ -22,7 +22,7 @@ public class Cliente implements Serializable{
     private String ruaCliente;
     private int nrCliente;
     private String cepCliente;
-    private String cidadeCliente;
+    private int cidadeCliente;
     private String ufCliente;
 
     public Cliente(){
@@ -35,7 +35,7 @@ public class Cliente implements Serializable{
         this.emailCliente = emailCliente;
     }
 
-    public Cliente(int idCliente, String cpfCliente, String nomeCliente, String emailCliente, Date dataCliente, String ruaCliente, int nrCliente, String cepCliente, String cidadeCliente, String ufCliente) {
+    public Cliente(int idCliente, String cpfCliente, String nomeCliente, String emailCliente, Date dataCliente, String ruaCliente, int nrCliente, String cepCliente, int cidadeCliente, String ufCliente) {
         this.idCliente = idCliente;
         this.cpfCliente = cpfCliente;
         this.nomeCliente = nomeCliente;
@@ -119,11 +119,11 @@ public class Cliente implements Serializable{
         this.cepCliente = cepCliente;
     }
 
-    public String getCidadeCliente() {
+    public int getCidadeCliente() {
         return cidadeCliente;
     }
 
-    public void setCidadeCliente(String cidadeCliente) {
+    public void setCidadeCliente(int cidadeCliente) {
         this.cidadeCliente = cidadeCliente;
     }
 

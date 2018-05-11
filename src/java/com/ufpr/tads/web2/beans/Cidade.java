@@ -23,7 +23,8 @@ public class Cidade implements Serializable{
         this.nomeCidade = nomeCidade;
     }
 
-    public int getIdCidade() {
+
+	public int getIdCidade() {
         return idCidade;
     }
 

@@ -9842,6 +9842,46 @@ CREATE TABLE `tb_usuario` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `tb_produto`
+--
+
+create table tb_produto(
+	id_produto int primary key auto_increment,
+    nome_produto varchar(100)
+    );
+    
+--
+-- Table structure for table `tb_atendimento`
+--
+
+create table tb_tipo_atendimento(
+	id_tipo_atendimento int primary key,
+    nome_tipo_atendimento VARCHAR(50)
+);
+
+--
+-- Table structure for table `tb_atendimento`
+--
+
+CREATE TABLE tb_atendimento (
+    id_atendimento INT PRIMARY KEY AUTO_INCREMENT,
+    dt_hr_atendimento datetime,
+    dsc_atendimento  VARCHAR(255),
+    id_produto int,
+    id_tipo_atendimento int,
+    id_usuario int,
+    id_cliente int,
+    res_atendimento char(1)
+);
+ 
+ 
+alter table tb_atendimento add constraint opt_res_atendimento check (res_atendimento in (upper('S'),upper('N')));
+alter table tb_atendimento add constraint fkatid_produto foreign key (id_produto) references tb_produto(id_produto);
+alter table tb_atendimento add constraint fkatid_tipo_atendimento foreign key (id_tipo_atendimento) references tb_tipo_atendimento(id_tipo_atendimento);
+alter table tb_atendimento add constraint fkatid_usuario foreign key (id_usuario) references tb_usuario(id_usuario);
+alter table tb_atendimento add constraint fkatid_cliente foreign key (id_cliente) references tb_cliente(id_cliente);   
+
+--
 -- Dumping data for table `tb_usuario`
 --
 

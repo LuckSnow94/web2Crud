@@ -23,7 +23,7 @@ public class Estado implements Serializable{
         this.nomeEstado = nomeEstado;
     }
         
-    public int getIdEstado() {
+	public int getIdEstado() {
         return idEstado;
     }
 

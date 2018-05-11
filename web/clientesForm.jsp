@@ -63,11 +63,7 @@
                     }
                 });
             }
-        </script>
-<script>
-            $(document).ready(function () {
-                $('select').material_select();
-            });
+            
         </script>
 <link rel="icon" href="java.ico">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -77,6 +73,12 @@
 		<title>Alterar</title>
 </head>
 <body class="bgimg">
+	<script type="text/javascript">
+window.onload = function() {
+			var id = ${estado};
+			document.getElementById("estado")[id].selected = true;
+		}
+</script>
 	<div class="container">
 		<div class="row">
 			<div class="col offset-m2 m8">
@@ -127,7 +129,6 @@
 							<div class="col m4">
 								<label>Estado:</label> <select name="ufCliente" id="estado"
 									class="browser-default">
-									<option><c:out value="${cliente.ufCliente}" /></option>
 									<c:forEach items="${estados}" var="estado">
 										<option value="<c:out value="${estado.idEstado}"/>"><c:out
 												value="${estado.siglaEstado}" /></option>
@@ -137,7 +138,9 @@
 							<div class="col m6">
 								<label>Cidade:</label> <select name="cidadeCliente" id="cidade"
 									class="browser-default">
-									<option><c:out value="${cliente.cidadeCliente}" /></option>
+									<option value='<c:out value="${cidade.idCidade }"></c:out>'>
+										<c:out value="${cidade.nomeCidade}" />
+									</option>
 								</select>
 							</div>
 							<div class="col m2">
@@ -170,6 +173,12 @@
 		<title>Visualizar</title>
 		</head>
 		<body class="bgimg">
+			<script type="text/javascript">
+			window.onload = function() {
+				var id = ${estado};
+				document.getElementById("estado")[id].selected = true;
+			}
+		</script>
 			<div class="container">
 				<div class="row">
 					<div class="col offset-m2 m8">
@@ -214,20 +223,21 @@
 											value="<c:out value="${cliente.cepCliente}"/>" />
 									</div>
 									<div class="col m4">
-										<label>Estado:</label> 
-										<select name="ufCliente" id="estado"
+										<label>Estado:</label> <select name="ufCliente" id="estado"
 											class="browser-default" disabled="true">
-											<option><c:out value="${cliente.ufCliente}" /></option>
 											<c:forEach items="${estados}" var="estado">
-												<option value="<c:out value="${estado.idEstado}"/>"><c:out
-														value="${estado.siglaEstado}" /></option>
+												<option value="<c:out value="${estado.idEstado}"/>">
+													<c:out value="${estado.siglaEstado}" />
+												</option>
 											</c:forEach>
 										</select>
 									</div>
 									<div class="col m6">
 										<label>Cidade:</label> <select name="cidadeCliente"
 											id="cidade" class="browser-default" disabled="true">
-											<option><c:out value="${cliente.cidadeCliente}" /></option>
+											<option value='<c:out value="${cidade.idCidade}"></c:out>'>
+												<c:out value="${cidade.nomeCidade}" />
+											</option>
 										</select>
 									</div>
 									<div class="col m2">
@@ -243,16 +253,7 @@
 					</div>
 				</div>
 				<div style="height: 100px;"></div>
-			</div>]
-			<script type="text/javascript">
-				
-				$(document).ready(function () {
-	                $("#cidade").change(function () {
-	                    getEstadoCliente();
-	                });
-	            });
-				
-			</script>
+			</div>
 	</c:when>
 	<c:otherwise>
 		<title>Novo</title>
@@ -301,7 +302,6 @@
 									<div class="col m3">
 										<label>Estado:</label> <select name="ufCliente" id="estado"
 											class="browser-default">
-											<option value=""></option>
 											<c:forEach items="${estados}" var="estado">
 												<option value="<c:out value="${estado.idEstado}"/>"><c:out
 														value="${estado.siglaEstado}" /></option>

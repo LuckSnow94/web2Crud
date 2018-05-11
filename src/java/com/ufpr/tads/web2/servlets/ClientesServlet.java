@@ -6,9 +6,12 @@
 package com.ufpr.tads.web2.servlets;
 
 import com.mysql.cj.util.StringUtils;
+import com.ufpr.tads.web2.beans.Cidade;
 import com.ufpr.tads.web2.beans.Cliente;
 import com.ufpr.tads.web2.beans.Estado;
 import com.ufpr.tads.web2.facade.ClientesFacade;
+import com.ufpr.tads.web2.facade.EnderecoFacade;
+
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import java.sql.SQLException;
@@ -22,7 +25,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import static java.lang.Integer.parseInt;
 
 /**
  *
@@ -92,12 +94,17 @@ public class ClientesServlet extends BeanServlet {
                     id = parseInt((String)request.getParameter("id"));
                     if( id > 0){
                         Cliente cliente = ClientesFacade.search(id);
-                        //Carregar lista de estados
-                        List<Estado> estados;
-						try {
-							estados = ClientesFacade.listarEstados();
+                        
+                        try {
+							//Carregar lista de estados
+							List<Estado> estados = EnderecoFacade.listarEstados();
+							//Carregar cidade do cliente
+							Cidade cidade = EnderecoFacade.buscarCidade(cliente.getCidadeCliente());
+							
 							rd = request.getRequestDispatcher("clientesForm.jsp");
 							request.setAttribute("estados", estados);
+							request.setAttribute("estado", (cidade.getIdEstado()-1));
+							request.setAttribute("cidade", cidade);
 							request.setAttribute("visualizar", true);
 							request.setAttribute("cliente", cliente);
 							rd.forward(request, response);
@@ -118,12 +125,16 @@ public class ClientesServlet extends BeanServlet {
                     if( id > 0){
                         Cliente cliente = ClientesFacade.search(id);
                         
-                        //Carregar lista de estados
-                        List<Estado> estados;
 						try {
-							estados = ClientesFacade.listarEstados();
+							//Carregar lista de estados
+							List<Estado> estados = EnderecoFacade.listarEstados();
+							//Carregar cidade do cliente
+							Cidade cidade = EnderecoFacade.buscarCidade(cliente.getCidadeCliente());
+							
 							rd = request.getRequestDispatcher("clientesForm.jsp");
 							request.setAttribute("estados", estados);
+							request.setAttribute("estado", (cidade.getIdEstado()-1));
+							request.setAttribute("cidade", cidade);
 							request.setAttribute("alterar", true);
 							request.setAttribute("cliente", cliente);
 							rd.forward(request, response);
@@ -170,7 +181,7 @@ public class ClientesServlet extends BeanServlet {
                     //Carregar lista de estados
 				List<Estado> estados;
 				try {
-					estados = ClientesFacade.listarEstados();
+					estados = EnderecoFacade.listarEstados();
 					rd = request.getRequestDispatcher("clientesForm.jsp");
 					request.setAttribute("estados", estados);
 					rd.forward(request, response);

@@ -23,32 +23,19 @@ public class Cliente implements Serializable{
     private int nrCliente;
     private String cepCliente;
     private int cidadeCliente;
-    private String ufCliente;
 
     public Cliente(){
     }
     
     public Cliente(int idCliente, String cpfCliente, String nomeCliente, String emailCliente) {
-        this.idCliente = idCliente;
-        this.cpfCliente = cpfCliente.substring(0,3) + "." + cpfCliente.substring(3, 6) + "." + cpfCliente.substring(6, 9) + "-" + cpfCliente.substring(9, 11);
-        this.nomeCliente = nomeCliente;
-        this.emailCliente = emailCliente;
-    }
+		super();
+		this.idCliente = idCliente;
+		this.cpfCliente = cpfCliente;
+		this.nomeCliente = nomeCliente;
+		this.emailCliente = emailCliente;
+	}
 
-    public Cliente(int idCliente, String cpfCliente, String nomeCliente, String emailCliente, Date dataCliente, String ruaCliente, int nrCliente, String cepCliente, int cidadeCliente, String ufCliente) {
-        this.idCliente = idCliente;
-        this.cpfCliente = cpfCliente;
-        this.nomeCliente = nomeCliente;
-        this.emailCliente = emailCliente;
-        this.dataCliente = dataCliente;
-        this.ruaCliente = ruaCliente;
-        this.nrCliente = nrCliente;
-        this.cepCliente = cepCliente;
-        this.cidadeCliente = cidadeCliente;
-        this.ufCliente = ufCliente;
-    }
-    
-    public int getIdCliente() {
+	public int getIdCliente() {
         return idCliente;
     }
 
@@ -125,14 +112,6 @@ public class Cliente implements Serializable{
 
     public void setCidadeCliente(int cidadeCliente) {
         this.cidadeCliente = cidadeCliente;
-    }
-
-    public String getUfCliente() {
-        return ufCliente;
-    }
-
-    public void setUfCliente(String ufCliente) {
-        this.ufCliente = ufCliente;
     }
     
 }

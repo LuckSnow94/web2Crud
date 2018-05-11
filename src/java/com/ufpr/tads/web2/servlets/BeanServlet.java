@@ -43,6 +43,10 @@ public class BeanServlet extends HttpServlet {
     protected Cliente fillCliente(HttpServletRequest pRequest) throws ParseException{
         //Busca dados do cliente enviados pelo formulário
         Cliente c = new Cliente();
+        if(!(pRequest.getParameter("id") == null)) {
+        	int idCliente = Integer.parseInt((String) pRequest.getParameter("id"));
+        	c.setIdCliente(idCliente);
+        }
         c.setNomeCliente(pRequest.getParameter("nomeCliente"));
         c.setCpfCliente(pRequest.getParameter("cpfCliente"));
         c.setEmailCliente(pRequest.getParameter("emailCliente"));
@@ -64,10 +68,6 @@ public class BeanServlet extends HttpServlet {
         int cidadeCliente = Integer.parseInt(pRequest.getParameter("cidadeCliente"));
         if(cidadeCliente > 0){
             c.setCidadeCliente(cidadeCliente);                        
-        }                    
-        String ufCliente = pRequest.getParameter("ufCliente");
-        if(!StringUtils.isNullOrEmpty(ufCliente)){
-            c.setUfCliente(ufCliente);                        
         }
         int nrCliente = parseInt(pRequest.getParameter("nrCliente"));
         if(nrCliente > 0){

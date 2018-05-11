@@ -18,10 +18,11 @@ import java.util.List;
  * @author luck
  */
 public class ClienteDAO {
-    private final String insert = "INSERT INTO tb_cliente(cpf_cliente, nome_cliente, email_cliente, "
-                    + "data_cliente, rua_cliente, nr_cliente, cep_cliente, cidade_cliente, uf_cliente) values (?,?,?,?,?,?,?,?,?);";
-    private final String update = "UPDATE tb_cliente SET cpf_cliente = ?, nome_cliente = ?, email_cliente = ?, "
-                    + "data_cliente = ?, rua_cliente = ?, nr_cliente = ?, cep_cliente = ?, cidade_cliente = ?, uf_cliente = ? WHERE id_cliente = ?;";
+    private final String INSERT = "INSERT INTO tb_cliente(cpf_cliente, nome_cliente, email_cliente, "
+                    + "data_cliente, rua_cliente, nr_cliente, cep_cliente, id_cidade) values (?,?,?,?,?,?,?,?);";
+    private final String UPDATE = "UPDATE tb_cliente SET cpf_cliente = ?, nome_cliente = ?, email_cliente = ?, "
+                    + "data_cliente = ?, rua_cliente = ?, nr_cliente = ?, cep_cliente = ?, id_cidade = ? WHERE id_cliente = ?;";
+    private final String DELETE = "DELETE FROM tb_cliente WHERE id_cliente=?;";
     Connection con = null;
     PreparedStatement stmt = null;
     ResultSet rs = null;
@@ -72,7 +73,6 @@ public class ClienteDAO {
                     aux.setNrCliente(rs.getInt(7));
                     aux.setCepCliente(rs.getString(8));
                     aux.setCidadeCliente(rs.getInt(9));
-                    aux.setUfCliente(rs.getString(10));
                     }
             }catch (Exception e) {
                 throw new RuntimeException(e);
@@ -85,7 +85,7 @@ public class ClienteDAO {
     public void adicionarCliente(Cliente cliente) throws InstantiationException, IllegalAccessException {
             try {
                     con = new ConnectionFactory().getConnection();
-                    stmt = con.prepareStatement(insert);
+                    stmt = con.prepareStatement(INSERT);
                     stmt.setString(1, cliente.getCpfCliente());
                     stmt.setString(2, cliente.getNomeCliente());
                     stmt.setString(3, cliente.getEmailCliente());
@@ -98,7 +98,6 @@ public class ClienteDAO {
                     stmt.setInt(6, cliente.getNrCliente());
                     stmt.setString(7, cliente.getCepCliente());
                     stmt.setInt(8, cliente.getCidadeCliente());
-                    stmt.setString(9, cliente.getUfCliente());
                     stmt.execute();
                     stmt.close();
             } catch (SQLException e) {
@@ -111,7 +110,7 @@ public class ClienteDAO {
     public void alterarCliente(Cliente cliente) {
             try {
                 con = new ConnectionFactory().getConnection();
-                stmt = con.prepareStatement(update);
+                stmt = con.prepareStatement(UPDATE);
                 stmt.setString(1, cliente.getCpfCliente());
                 stmt.setString(2, cliente.getNomeCliente());
                 stmt.setString(3, cliente.getEmailCliente());
@@ -124,8 +123,7 @@ public class ClienteDAO {
                 stmt.setInt(6, cliente.getNrCliente());
                 stmt.setString(7, cliente.getCepCliente());
                 stmt.setInt(8, cliente.getCidadeCliente());
-                stmt.setString(9, cliente.getUfCliente());
-                stmt.setInt(10, cliente.getIdCliente());
+                stmt.setInt(9, cliente.getIdCliente());
                 stmt.executeUpdate();
                 stmt.close();
             } catch (Exception e) {
@@ -137,7 +135,7 @@ public class ClienteDAO {
 
     public void deletarCliente(int idCliente) throws SQLException, InstantiationException, IllegalAccessException {
     	con = new ConnectionFactory().getConnection();
-    	stmt = con.prepareStatement("DELETE FROM tb_cliente WHERE id_cliente=?;");
+    	stmt = con.prepareStatement(DELETE);
         try {
             stmt.setInt(1, idCliente);
             stmt.executeUpdate();

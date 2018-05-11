@@ -58,7 +58,7 @@ public class LoginServlet extends HttpServlet {
 				}
 				else{
 					RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-					request.setAttribute("msg", "Usu√°rio/Senha inv√°lidos.");
+					request.setAttribute("msg", "Usu·rio/Senha inv·lidos.");
 					rd.forward(request, response);
 				}
 			} catch (InstantiationException e) {

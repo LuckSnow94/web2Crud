@@ -5,20 +5,23 @@
  */
 package com.ufpr.tads.web2.servlets;
 
-import com.google.gson.Gson;
-import com.ufpr.tads.web2.beans.Cidade;
-import com.ufpr.tads.web2.dao.CidadeEstadoDAO;
-import java.io.IOException;
 import static java.lang.Integer.parseInt;
+
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
+import com.ufpr.tads.web2.beans.Cidade;
+import com.ufpr.tads.web2.facade.EnderecoFacade;
 
 /**
  *
@@ -42,10 +45,8 @@ public class AJAXServlet extends HttpServlet {
             int idEstado = parseInt(request.getParameter("idEstado"));
         
             // Vai no BD buscar todas as cidades deste estado, em uma lista
-            CidadeEstadoDAO dao = new CidadeEstadoDAO();
-            List<Cidade> cidades;
 			try {
-				cidades = dao.listarCidades(idEstado);
+				List<Cidade> cidades  = EnderecoFacade.listarCidades(idEstado);
 				String json = new Gson().toJson(cidades);
 				// retorna o JSON
 				response.setContentType("application/json");

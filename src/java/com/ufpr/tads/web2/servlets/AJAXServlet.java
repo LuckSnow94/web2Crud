@@ -5,8 +5,6 @@
  */
 package com.ufpr.tads.web2.servlets;
 
-import static java.lang.Integer.parseInt;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -20,15 +18,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.mysql.cj.util.StringUtils;
 import com.ufpr.tads.web2.beans.Cidade;
+import com.ufpr.tads.web2.facade.ClienteFacade;
 import com.ufpr.tads.web2.facade.EnderecoFacade;
 
 /**
  *
  * @author luck
  */
-@WebServlet(name = "AJAXServlet", urlPatterns = {"/AJAXServlet"})
-public class AJAXServlet extends HttpServlet {
+@WebServlet(name = "AjaxServlet", urlPatterns = {"/AjaxServlet"})
+public class AjaxServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,25 +42,42 @@ public class AJAXServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException, ClassNotFoundException, SQLException {
         
-            int idEstado = parseInt(request.getParameter("idEstado"));
-        
-            // Vai no BD buscar todas as cidades deste estado, em uma lista
-			try {
-				List<Cidade> cidades  = EnderecoFacade.listarCidades(idEstado);
-				String json = new Gson().toJson(cidades);
-				// retorna o JSON
-				response.setContentType("application/json");
-				response.setCharacterEncoding("UTF-8");
-				response.getWriter().write(json);
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+            String idEstado = request.getParameter("idEstado");
+            String email = request.getParameter("email");
+            String cpf = request.getParameter("cpf");
+            String json = "{}";
+            boolean existe = true;
             
+            // Vai no BD buscar todas as cidades deste estado, em uma lista
+            if (!StringUtils.isNullOrEmpty(idEstado)) {
+            	int estado = Integer.parseInt(idEstado);
+            	try {
+            		List<Cidade> cidades  = EnderecoFacade.listarCidades(estado);
+            		json = new Gson().toJson(cidades);
+            	} catch (InstantiationException e) {
+            		// TODO Auto-generated catch block
+            		e.printStackTrace();
+            	} catch (IllegalAccessException e) {
+            		// TODO Auto-generated catch block
+            		e.printStackTrace();
+            	}            	
+            }
+            // Verifica email duplicado
+            else if (!StringUtils.isNullOrEmpty(email)) {
+                existe = ClienteFacade.verifyEmail(email);
+                json = "{\"result\": " + existe +  "}";
+            }
+            // Verifica cpf duplicado
+            else if (!StringUtils.isNullOrEmpty(cpf)) {
+                existe = ClienteFacade.verifyCpf(cpf);
+                json = "{\"result\": " + existe +  "}";            	
+            }
+            
+			// retorna o JSON
             // transforma o MAP em JSON
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(json);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -78,9 +95,9 @@ public class AJAXServlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AJAXServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AjaxServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(AJAXServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AjaxServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -98,9 +115,9 @@ public class AJAXServlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AJAXServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AjaxServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(AJAXServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AjaxServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

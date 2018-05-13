@@ -9,7 +9,7 @@ import com.mysql.cj.util.StringUtils;
 import com.ufpr.tads.web2.beans.Cidade;
 import com.ufpr.tads.web2.beans.Cliente;
 import com.ufpr.tads.web2.beans.Estado;
-import com.ufpr.tads.web2.facade.ClientesFacade;
+import com.ufpr.tads.web2.facade.ClienteFacade;
 import com.ufpr.tads.web2.facade.EnderecoFacade;
 
 import java.io.IOException;
@@ -54,7 +54,7 @@ public class ClientesServlet extends BeanServlet {
     if (session == null || session.getAttribute("user") == null) {
 
         RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-        request.setAttribute("msg", "Usuário deve se autenticar para acessar o sistema.");
+        request.setAttribute("msg", "Usu�rio deve se autenticar para acessar o sistema.");
         rd.forward(request, response);
         
     }else {
@@ -75,7 +75,7 @@ public class ClientesServlet extends BeanServlet {
                 //Listar clientes do banco de dados
                 case "list":
 				try {
-					lista = ClientesFacade.searchAll();
+					lista = ClienteFacade.selectAll();
 				} catch (InstantiationException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -93,7 +93,7 @@ public class ClientesServlet extends BeanServlet {
                     //Busca id do cliente a ser visualizado no parametro da página
                     id = parseInt((String)request.getParameter("id"));
                     if( id > 0){
-                        Cliente cliente = ClientesFacade.search(id);
+                        Cliente cliente = ClienteFacade.select(id);
                         
                         try {
 							//Carregar lista de estados
@@ -123,7 +123,7 @@ public class ClientesServlet extends BeanServlet {
                     //Busca id do cliente a ser visualizado no parametro da página
                     id = parseInt((String)request.getParameter("id"));
                     if( id > 0){
-                        Cliente cliente = ClientesFacade.search(id);
+                        Cliente cliente = ClienteFacade.select(id);
                         
 						try {
 							//Carregar lista de estados
@@ -154,7 +154,7 @@ public class ClientesServlet extends BeanServlet {
                     id = parseInt((String)request.getParameter("id"));
                     if( id > 0){
                         try {
-							ClientesFacade.delete(id);
+							ClienteFacade.delete(id);
 						} catch (InstantiationException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -171,7 +171,7 @@ public class ClientesServlet extends BeanServlet {
                 case "update":
                     //Preencher dados do cliente no enviados pelo formulário
                     c = super.fillCliente(request);
-                    ClientesFacade.update(c);
+                    ClienteFacade.update(c);
                     rd = request.getRequestDispatcher("ClientesServlet?action=list");
                     rd.forward(request, response);
                     break;
@@ -200,7 +200,7 @@ public class ClientesServlet extends BeanServlet {
                     //Preencher dados do cliente no enviados pelo formulário
                     c = super.fillCliente(request);
 				try {
-					ClientesFacade.insert(c);
+					ClienteFacade.insert(c);
 				} catch (InstantiationException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -218,7 +218,7 @@ public class ClientesServlet extends BeanServlet {
         }else{
             //Por default, a controller lista os clientes
             try {
-				lista = ClientesFacade.searchAll();
+				lista = ClienteFacade.selectAll();
 			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

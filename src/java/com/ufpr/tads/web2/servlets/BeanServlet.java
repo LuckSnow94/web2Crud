@@ -7,11 +7,12 @@ package com.ufpr.tads.web2.servlets;
 
 import com.mysql.cj.util.StringUtils;
 import com.ufpr.tads.web2.beans.Cliente;
+import com.ufpr.tads.web2.utils.DataUtil;
+
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -48,20 +49,17 @@ public class BeanServlet extends HttpServlet {
         	c.setIdCliente(idCliente);
         }
         c.setNomeCliente(pRequest.getParameter("nomeCliente"));
-        c.setCpfCliente(pRequest.getParameter("cpfCliente"));
+        c.setCpfCliente(pRequest.getParameter("cpfCliente").toString().replaceAll("[^0-9]", ""));
         c.setEmailCliente(pRequest.getParameter("emailCliente"));
         String data = pRequest.getParameter("dataCliente");
         if(!StringUtils.isNullOrEmpty(data)){
-            //Converter data de string para data java
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            java.util.Date date = format.parse(data);
-            c.setDataCliente(date);                        
+            c.setDataCliente(DataUtil.formataDataTelaParaBean(data));                        
         }
         String ruaCliente = pRequest.getParameter("ruaCliente");
         if(!StringUtils.isNullOrEmpty(ruaCliente)){
             c.setRuaCliente(ruaCliente);                        
         }
-        String cepCliente = pRequest.getParameter("cepCliente");
+        String cepCliente = pRequest.getParameter("cepCliente").toString().replaceAll("[^0-9]", "");
         if(!StringUtils.isNullOrEmpty(cepCliente)){
             c.setCepCliente(cepCliente);                        
         }

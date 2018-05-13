@@ -6,6 +6,9 @@
 package com.ufpr.tads.web2.dao;
 
 import com.ufpr.tads.web2.beans.Cliente;
+import com.ufpr.tads.web2.utils.CpfUtil;
+import com.ufpr.tads.web2.utils.DataUtil;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,11 +21,19 @@ import java.util.List;
  * @author luck
  */
 public class ClienteDAO {
-    private final String INSERT = "INSERT INTO tb_cliente(cpf_cliente, nome_cliente, email_cliente, "
+    
+	private final String SELECT_ALL = "SELECT * FROM tb_cliente;";
+	private final String SELECT = "SELECT * FROM tb_cliente WHERE id_cliente = ?;";
+	
+	private final String INSERT = "INSERT INTO tb_cliente(cpf_cliente, nome_cliente, email_cliente, "
                     + "data_cliente, rua_cliente, nr_cliente, cep_cliente, id_cidade) values (?,?,?,?,?,?,?,?);";
     private final String UPDATE = "UPDATE tb_cliente SET cpf_cliente = ?, nome_cliente = ?, email_cliente = ?, "
                     + "data_cliente = ?, rua_cliente = ?, nr_cliente = ?, cep_cliente = ?, id_cidade = ? WHERE id_cliente = ?;";
     private final String DELETE = "DELETE FROM tb_cliente WHERE id_cliente=?;";
+    
+    private final String VERIFY_CPF = "SELECT cpf_cliente FROM tb_cliente WHERE cpf_cliente = ?;";
+    private final String VERIFY_EMAIL = "SELECT email_cliente FROM tb_cliente WHERE email_cliente = ?;";
+    
     Connection con = null;
     PreparedStatement stmt = null;
     ResultSet rs = null;
@@ -36,10 +47,10 @@ public class ClienteDAO {
 
         try {
             con = new ConnectionFactory().getConnection();
-            stmt = con.prepareStatement("SELECT * FROM tb_cliente;");
+            stmt = con.prepareStatement(SELECT_ALL);
             rs = stmt.executeQuery();
             while(rs.next()){
-                Cliente aux =  new Cliente(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4));
+                Cliente aux =  new Cliente(rs.getInt(1),CpfUtil.formataCpfTela(rs.getString(2)),rs.getString(3),rs.getString(4));
                 lista.add(aux);
             }
             rs.close();
@@ -55,7 +66,7 @@ public class ClienteDAO {
     	Cliente aux = new Cliente();
             try {
                 con = new ConnectionFactory().getConnection();
-                stmt = con.prepareStatement("SELECT * FROM tb_cliente WHERE id_cliente = ?;");
+                stmt = con.prepareStatement(SELECT);
                 stmt.setInt(1, id);
                 rs = stmt.executeQuery();
                 if (rs.next()) {
@@ -63,12 +74,7 @@ public class ClienteDAO {
                     aux.setCpfCliente(rs.getString(2));
                     aux.setNomeCliente(rs.getString(3));
                     aux.setEmailCliente(rs.getString(4));
-                    
-                    //converter sql date para java date 
-                    java.sql.Date sqlDate = rs.getDate(5);
-                    java.util.Date utilDate = new java.util.Date(sqlDate.getTime());
-
-                    aux.setDataCliente(utilDate);                    
+                    aux.setDataCliente(DataUtil.formataDataSqlParaBean(rs.getDate(5)));                    
                     aux.setRuaCliente(rs.getString(6));
                     aux.setNrCliente(rs.getInt(7));
                     aux.setCepCliente(rs.getString(8));
@@ -89,11 +95,7 @@ public class ClienteDAO {
                     stmt.setString(1, cliente.getCpfCliente());
                     stmt.setString(2, cliente.getNomeCliente());
                     stmt.setString(3, cliente.getEmailCliente());
-                    
-                    //converter java date para sql date
-                    java.sql.Date sqlDate = new java.sql.Date(cliente.getDateCliente().getTime());
-                    
-                    stmt.setDate(4, sqlDate);
+                    stmt.setDate(4, DataUtil.formataDataBeanParaSql(cliente.getDateCliente()));
                     stmt.setString(5, cliente.getRuaCliente());
                     stmt.setInt(6, cliente.getNrCliente());
                     stmt.setString(7, cliente.getCepCliente());
@@ -114,11 +116,7 @@ public class ClienteDAO {
                 stmt.setString(1, cliente.getCpfCliente());
                 stmt.setString(2, cliente.getNomeCliente());
                 stmt.setString(3, cliente.getEmailCliente());
-                    
-                //converter java date para sql date
-                java.sql.Date sqlDate = new java.sql.Date(cliente.getDateCliente().getTime());
-
-                stmt.setDate(4, sqlDate);
+                stmt.setDate(4, DataUtil.formataDataBeanParaSql(cliente.getDateCliente()));
                 stmt.setString(5, cliente.getRuaCliente());
                 stmt.setInt(6, cliente.getNrCliente());
                 stmt.setString(7, cliente.getCepCliente());
@@ -144,4 +142,38 @@ public class ClienteDAO {
         }
     }
     
+    public boolean verificaCpf(String cpf) {
+    	try {
+            con = new ConnectionFactory().getConnection();
+            stmt = con.prepareStatement(VERIFY_CPF);
+            stmt.setString(1, cpf);
+            rs = stmt.executeQuery();
+            if (rs.next())
+            	return true;
+            else
+            	return false;
+    	} catch (Exception e) {
+    		throw new RuntimeException(e);
+    	}finally{
+    		try {con.close();} catch (SQLException e) {}
+    	}
+    }
+
+    public boolean verificaEmail(String email) {
+    	try {
+            con = new ConnectionFactory().getConnection();
+            stmt = con.prepareStatement(VERIFY_EMAIL);
+            stmt.setString(1, email);
+            rs = stmt.executeQuery();
+            if (rs.next())
+            	return true;
+            else
+            	return false;
+    	} catch (Exception e) {
+    		throw new RuntimeException(e);
+    	}finally{
+    		try {con.close();} catch (SQLException e) {}
+    	}
+    }
+
 }

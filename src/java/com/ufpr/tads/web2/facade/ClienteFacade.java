@@ -18,21 +18,21 @@ import java.util.logging.Logger;
  *
  * @author luck
  */
-public class ClientesFacade implements Serializable{
+public class ClienteFacade implements Serializable{
         
-    public static List<Cliente> searchAll() throws InstantiationException, IllegalAccessException{
+    public static List<Cliente> selectAll() throws InstantiationException, IllegalAccessException{
         //Busca lista de clientes no banco de dados e retorna um List<Cliente>
         ClienteDAO dao = new ClienteDAO();
         List<Cliente> lista = new ArrayList<Cliente>();
         try {
             lista = dao.listarClientes();
         } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(ClientesFacade.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ClienteFacade.class.getName()).log(Level.SEVERE, null, ex);
         }
         return lista;
     }
     
-    public static Cliente search(int id){
+    public static Cliente select(int id){
         //Busca id do cliente a ser visualizado no parametro da página
         ClienteDAO dao = new ClienteDAO();
         Cliente c = dao.buscarCliente(id);
@@ -55,8 +55,24 @@ public class ClientesFacade implements Serializable{
             ClienteDAO dao = new ClienteDAO();        
             dao.deletarCliente(id);
         } catch (SQLException ex) {
-            Logger.getLogger(ClientesFacade.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ClienteFacade.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+	public static boolean verifyCpf(String cpf) {
+		ClienteDAO dao = new ClienteDAO();
+		if(dao.verificaCpf(cpf))
+			return true;
+		else
+			return false;
+	}
+
+	public static boolean verifyEmail(String email) {
+		ClienteDAO dao = new ClienteDAO();
+		if(dao.verificaEmail(email))
+			return true;
+		else
+			return false;
+	}
+	
 }

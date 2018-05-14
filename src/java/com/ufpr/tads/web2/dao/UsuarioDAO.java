@@ -17,6 +17,7 @@ import java.sql.SQLException;
  * @author luck
  */
 public class UsuarioDAO {
+	private final String VERIFY_LOGIN = "SELECT * FROM tb_usuario where login_usuario = ? and senha_usuario = ?;";
     Connection con = null;
     PreparedStatement stmt = null;
     ResultSet rs = null;
@@ -30,7 +31,7 @@ public class UsuarioDAO {
         
         try {
             con = new ConnectionFactory().getConnection();
-            stmt = con.prepareStatement("SELECT * FROM tb_usuario where login_usuario = ? and senha_usuario = ?;");
+            stmt = con.prepareStatement(VERIFY_LOGIN);
             stmt.setString(1, login);
             stmt.setString(2, senha);
             rs = stmt.executeQuery();

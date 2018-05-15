@@ -4,7 +4,6 @@
     Author     : luck
 --%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.io.IOException"%>
 <%@page import="com.sun.faces.application.WebPrintWriter"%>
@@ -13,7 +12,8 @@
 <%@page import="java.util.List"%>
 <%@page import="com.ufpr.tads.web2.beans.LoginBean"%>
 <%@page import="com.mysql.cj.util.StringUtils"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@page errorPage="erro.jsp" %>
 <%-- Procura se existe um usuário instanciado --%>
 <c:choose>
@@ -62,7 +62,7 @@
                         <tbody>
                             <c:forEach items="${lista}" var="aux">
                                 <tr class='card'>
-                                <td>${aux.dataHoraAtendimento}</td>
+                                <td><fmt:formatDate value="${aux.dataHoraAtendimento}" type="both" pattern="dd/MM/yyyy HH:mm" /></td>
                                 <td>${aux.produto.nomeProduto}</td>
                                 <td>${aux.cliente.nomeCliente}</td>
                                 <td class="center-align" style="width: 220px;">
@@ -74,11 +74,8 @@
                     <div style="height: 10px;"></div>
                     <div class="container">
                         <div class="row">
-                            <div class="col left-align">
-                                <a href="ClientesServlet?action=formNew" class="waves-effect waves-teal btn">Novo<i class="material-icons right">add</i></a>                                
-                            </div>
-                            <div class="col offset-s6">
-                                <a href="portal.jsp" class="waves-effect waves-teal btn">Voltar<i class="material-icons right">arrow_back</i></a>                                
+                            <div class="col offset-s8">
+                                <a href="portal.jsp" class="waves-effect waves-teal btn">voltar<i class="material-icons right">arrow_back</i></a>                                
                             </div>
                         </div>
                     </div>

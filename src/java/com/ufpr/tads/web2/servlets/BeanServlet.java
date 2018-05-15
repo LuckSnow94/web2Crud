@@ -6,7 +6,11 @@
 package com.ufpr.tads.web2.servlets;
 
 import com.mysql.cj.util.StringUtils;
+import com.ufpr.tads.web2.beans.Atendimento;
 import com.ufpr.tads.web2.beans.Cliente;
+import com.ufpr.tads.web2.beans.LoginBean;
+import com.ufpr.tads.web2.facade.AtendimentoFacade;
+import com.ufpr.tads.web2.facade.ClienteFacade;
 import com.ufpr.tads.web2.utils.DataUtil;
 
 import java.io.IOException;
@@ -72,6 +76,24 @@ public class BeanServlet extends HttpServlet {
             c.setNrCliente(nrCliente);                        
         }
         return c;
+    }
+    
+    protected Atendimento fillAtendimento(HttpServletRequest pRequest) throws ParseException{
+		Atendimento at = new Atendimento();
+		if(!StringUtils.isNullOrEmpty((String) pRequest.getParameter("dataAtendimento")))
+			at.setDataHoraAtendimento(DataUtil.formataDataHoraTelaParaBean(pRequest.getParameter("dataAtendimento")));
+		if(!StringUtils.isNullOrEmpty(pRequest.getParameter("descricaoAtendimento")))
+			at.setDescricaoAtendimento(pRequest.getParameter("descricaoAtendimento"));
+		if(!StringUtils.isNullOrEmpty(pRequest.getParameter("produto")))
+			at.setProduto(AtendimentoFacade.buscarProduto((Integer.parseInt(pRequest.getParameter("produto")))));
+		if(!StringUtils.isNullOrEmpty(pRequest.getParameter("tipoAtendimento")))
+			at.setTipoAtendimento(AtendimentoFacade.buscarTipoAtendimento(Integer.parseInt(pRequest.getParameter("tipoAtendimento"))));
+		at.setUsuario((LoginBean) pRequest.getSession().getAttribute("user"));
+		if(!StringUtils.isNullOrEmpty(pRequest.getParameter("cliente")))
+			at.setCliente(ClienteFacade.select(Integer.parseInt(pRequest.getParameter("cliente"))));
+		if(!StringUtils.isNullOrEmpty(pRequest.getParameter("resultadoAtendimento")))
+			at.setResultadoAtendimento(pRequest.getParameter("resultadoAtendimento"));
+    	return at;
     }
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

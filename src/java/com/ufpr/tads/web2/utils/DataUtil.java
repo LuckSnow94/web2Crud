@@ -42,10 +42,15 @@ public class DataUtil {
         return date;
 	}
 	
-	//converter sql date para java date
-		public static java.util.Date formataDataHoraSqlParaBean(java.sql.Timestamp dataHora){
-			java.sql.Timestamp sqlTimestamp = dataHora;
-	        java.util.Date utilDate = new java.util.Date(sqlTimestamp.getTime());
-	        return utilDate;
-		}
+	//converter sql timestamp com data e hora para java date com data e hora
+	public static java.util.Date formataDataHoraSqlParaBean(java.sql.Timestamp dataHora){
+        java.util.Date utilDate = new java.util.Date(dataHora.getTime());
+        return utilDate;
+	}
+
+	//converter java date com data e hora para sql timestamp com data e hora
+	public static java.sql.Timestamp formataDataHoraBeanParaSql(java.util.Date dataHora){
+        java.sql.Timestamp sqlTimestamp = new java.sql.Timestamp(dataHora.getTime());
+        return sqlTimestamp ;
+	}
 }

@@ -3,6 +3,9 @@ package com.ufpr.tads.web2.servlets;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,11 +15,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ufpr.tads.web2.beans.Atendimento;
+import com.ufpr.tads.web2.beans.Cliente;
+import com.ufpr.tads.web2.beans.Produto;
+import com.ufpr.tads.web2.beans.TipoAtendimento;
+import com.ufpr.tads.web2.facade.AtendimentoFacade;
+import com.ufpr.tads.web2.facade.ClienteFacade;
+
 /**
  * Servlet implementation class AtendimentoServlet
  */
 @WebServlet("/AtendimentoServlet")
-public class AtendimentoServlet extends HttpServlet {
+public class AtendimentoServlet extends BeanServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -39,26 +49,65 @@ public class AtendimentoServlet extends HttpServlet {
 	        rd.forward(request, response);
 	        
 	    }else {
+	    	List<Atendimento> lista;
+			List<Cliente> clientes = null;
+			Atendimento at;
+			RequestDispatcher rd;
+	    	
 	    	String action = request.getParameter("action");
 	    	
 	    	switch (action) {
 	    	
 	    	//Lista os atendimentos
 			case "list":
-				List<Atendimento> lista = AtendimentoFacade.searchAll();
-				RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+				lista = AtendimentoFacade.searchAllAtendimentos();
+				request.setAttribute("lista", lista);
+				rd = request.getRequestDispatcher("atendimentoListar.jsp");
 		        rd.forward(request, response);
 				break;
 			//Realiza um novo atendimento
 			case "make":
-				
-				break;
+				//Busca clientes
+				try {
+					clientes = ClienteFacade.selectAll();
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				//Busca produtos
+				List<Produto> produtos = AtendimentoFacade.searchAllProdutos();
+				//Busca tipos de atendimentos
+				List<TipoAtendimento> tiposAtendimento = AtendimentoFacade.searchAllTiposAtendimentos();
+				request.setAttribute("clientes", clientes);
+				request.setAttribute("produtos", produtos);
+				request.setAttribute("tiposAtendimento", tiposAtendimento);
+				rd = request.getRequestDispatcher("atendimento.jsp");
+		        rd.forward(request, response);
+		        break;
 			//Mostra os detalhes de um atendimento
+			case "new":
+				at = super.fillAtendimento(request);
+				AtendimentoFacade.insert(at);
+				response.sendRedirect("portal.jsp");
+				break;
 			case "show":
-				
+				int id = Integer.parseInt(request.getParameter("id"));
+				if(id > 0) {
+					at = AtendimentoFacade.buscarAtendimento(id);
+					request.setAttribute("atendimento", at);
+					rd = request.getRequestDispatcher("atendimentoDetalhes.jsp");
+			        rd.forward(request, response);
+				}
 				break;
 		    //Lista os atendimentos
 			default:
+				lista = AtendimentoFacade.searchAllAtendimentos();
+				rd = request.getRequestDispatcher("atendimentoListar.jsp");
+				request.setAttribute("lista", lista);
+		        rd.forward(request, response);
 				break;
 			}
 	    }
@@ -69,7 +118,16 @@ public class AtendimentoServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClientesServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(ClientesServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
 	}
 
 	/**
@@ -77,7 +135,15 @@ public class AtendimentoServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClientesServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientesServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(ClientesServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
 	}
 
 }

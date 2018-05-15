@@ -11,7 +11,7 @@ public class Atendimento {
 	private TipoAtendimento tipoAtendimento;
 	private Usuario usuario;
 	private Cliente cliente;
-	private char resultadoAtendimento;
+	private String resultadoAtendimento;
 	
 	public int getIdAtendimento() {
 		return idAtendimento;
@@ -46,8 +46,14 @@ public class Atendimento {
 	public Usuario getUsuario() {
 		return usuario;
 	}
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(Usuario usuario){
 		this.usuario = usuario;
+	}
+	public void setUsuario(LoginBean loginBean) {
+		Usuario u = new Usuario();
+		u.setId(loginBean.getId());
+		u.setNome(loginBean.getNome());
+		this.usuario = u;
 	}
 	public Cliente getCliente() {
 		return cliente;
@@ -55,10 +61,10 @@ public class Atendimento {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	public char getResultadoAtendimento() {
+	public String getResultadoAtendimento() {
 		return resultadoAtendimento;
 	}
-	public void setResultadoAtendimento(char resultadoAtendimento) {
+	public void setResultadoAtendimento(String resultadoAtendimento) {
 		this.resultadoAtendimento = resultadoAtendimento;
 	}
 	

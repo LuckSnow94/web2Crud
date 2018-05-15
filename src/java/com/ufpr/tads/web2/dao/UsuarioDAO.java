@@ -6,6 +6,7 @@
 package com.ufpr.tads.web2.dao;
 
 import com.ufpr.tads.web2.beans.Usuario;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,7 +18,8 @@ import java.sql.SQLException;
  * @author luck
  */
 public class UsuarioDAO {
-	private final String VERIFY_LOGIN = "SELECT * FROM tb_usuario where login_usuario = ? and senha_usuario = ?;";
+	private final String VERIFY_LOGIN = "SELECT * FROM tb_usuario WHERE login_usuario = ? and senha_usuario = ?;";
+	private final String SELECT = "SELECT * FROM tb_usuario WHERE id_usuario = ?;";
     Connection con = null;
     PreparedStatement stmt = null;
     ResultSet rs = null;
@@ -26,9 +28,7 @@ public class UsuarioDAO {
     }
     
     public Usuario verificaLogin(String login, String senha) throws ClassNotFoundException, SQLException, IOException, InstantiationException, IllegalAccessException{
-        
         Usuario p = new Usuario();
-        
         try {
             con = new ConnectionFactory().getConnection();
             stmt = con.prepareStatement(VERIFY_LOGIN);
@@ -46,6 +46,26 @@ public class UsuarioDAO {
         }finally {
             con.close();
         }
+    }
+    
+    public Usuario buscarUsuario(int id) {
+    	Usuario aux = new Usuario();
+            try {
+                con = new ConnectionFactory().getConnection();
+                stmt = con.prepareStatement(SELECT);
+                stmt.setInt(1, id);
+                rs = stmt.executeQuery();
+                if (rs.next()) {
+                    aux.setId(rs.getInt(1));
+                    aux.setNome(rs.getString(2));
+                    }
+                rs.close();
+                return aux;
+            }catch (Exception e) {
+                throw new RuntimeException(e);
+            }finally {
+                try {con.close();} catch (SQLException e) {}
+            }
     }
     
 }

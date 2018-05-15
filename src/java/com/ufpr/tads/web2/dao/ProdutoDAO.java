@@ -38,9 +38,24 @@ public class ProdutoDAO {
         }
     }
 
-	public Produto buscarProduto(int idProduto) {
-		
-		return null;
+	public Produto buscarProduto(int idProduto) throws InstantiationException, IllegalAccessException, SQLException {
+		Produto pd = new Produto();
+		try {
+	        con = new ConnectionFactory().getConnection();
+	        stmt = con.prepareStatement(SELECT);
+            stmt.setInt(1, idProduto);
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                pd.setIdProduto((rs.getInt(1)));
+                pd.setNomeProduto((rs.getString(2)));
+            }
+            rs.close();
+            return pd;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            con.close();
+        }
 	}
     
 }

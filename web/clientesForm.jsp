@@ -62,7 +62,6 @@ $( "#cep" ).mask("00000-000");
 						<h1 class="white-text">@Portal</h1>
 						<h2 class="white-text">Olá, ${user.nome}</h2>
 						<div class="divider"></div>
-						<div style="height: 50px;"></div>
 						<div class="card">
 							<div class="card-content">
 								<div class="card-title center-align">
@@ -202,7 +201,6 @@ $( "#cep" ).mask("00000-000");
 				<h1 class="white-text">@Portal</h1>
 				<h2 class="white-text">Olá, ${user.nome}</h2>
 				<div class="divider"></div>
-				<div style="height: 50px;"></div>
 				<div class="card">
 					<div class="card-content">
 						<div class="card-title center-align">
@@ -350,7 +348,6 @@ $( "#cep" ).mask("00000-000");
 						<h1 class="white-text">@Portal</h1>
 						<h2 class="white-text">Olá, ${user.nome}</h2>
 						<div class="divider"></div>
-						<div style="height: 50px;"></div>
 						<div class="card">
 							<div class="card-content">
 								<div class="card-title center-align">

@@ -1,2 +1,2 @@
 # web2Crud
-Exercicio 7 - EM ANDAMENTO
+Exercicio 8 - EM ANDAMENTO

@@ -5,6 +5,16 @@ public class Produto {
 	private int idProduto;
 	private String nomeProduto;
 	
+	public Produto() {
+		super();
+	}
+	
+	public Produto(int idProduto, String nomeProduto) {
+		super();
+		this.idProduto = idProduto;
+		this.nomeProduto = nomeProduto;
+	}
+	
 	public int getIdProduto() {
 		return idProduto;
 	}

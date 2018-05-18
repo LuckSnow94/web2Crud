@@ -16,6 +16,8 @@ public class AtendimentoDAO {
 	private final String SELECT = "SELECT * FROM tb_atendimento WHERE id_atendimento= ?;";
 	private final String INSERT = "INSERT INTO tb_atendimento(dt_hr_atendimento, dsc_atendimento, "
 			+ "id_produto, id_tipo_atendimento, id_usuario, id_cliente, res_atendimento) VALUES (?,?,?,?,?,?,?);";
+	private final String RESOLVE = "UPDATE tb_atendimento SET res_atendimento = 'S' WHERE id_atendimento = ?;";
+	
 	Connection con = null;
     PreparedStatement stmt = null;
     ResultSet rs = null;
@@ -91,6 +93,20 @@ public class AtendimentoDAO {
             con.close();
         }
 
+	}
+
+	public void resolverAtendimento(int idAtendimento) throws InstantiationException, IllegalAccessException, SQLException {
+		try {
+	        con = new ConnectionFactory().getConnection();
+	        stmt = con.prepareStatement(RESOLVE);
+	        stmt.setInt(1, idAtendimento);
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            con.close();
+        }
 	}
 
 }

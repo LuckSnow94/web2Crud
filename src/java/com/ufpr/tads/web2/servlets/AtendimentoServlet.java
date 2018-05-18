@@ -77,12 +77,12 @@ public class AtendimentoServlet extends BeanServlet {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				//Busca produtos
+				//Busca ProdutoResource
 				List<Produto> produtos = AtendimentoFacade.searchAllProdutos();
 				//Busca tipos de atendimentos
 				List<TipoAtendimento> tiposAtendimento = AtendimentoFacade.searchAllTiposAtendimentos();
 				request.setAttribute("clientes", clientes);
-				request.setAttribute("produtos", produtos);
+				request.setAttribute("ProdutoResource", produtos);
 				request.setAttribute("tiposAtendimento", tiposAtendimento);
 				rd = request.getRequestDispatcher("atendimento.jsp");
 		        rd.forward(request, response);
@@ -90,7 +90,7 @@ public class AtendimentoServlet extends BeanServlet {
 			//Mostra os detalhes de um atendimento
 			case "new":
 				at = super.fillAtendimento(request);
-				AtendimentoFacade.insert(at);
+				AtendimentoFacade.insertAtendimento(at);
 				response.sendRedirect("portal.jsp");
 				break;
 			case "show":

@@ -3,7 +3,6 @@ package com.ufpr.tads.web2.servlets;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,11 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.ufpr.tads.web2.beans.Atendimento;
-import com.ufpr.tads.web2.beans.Cliente;
-import com.ufpr.tads.web2.beans.Produto;
-import com.ufpr.tads.web2.beans.TipoAtendimento;
 import com.ufpr.tads.web2.facade.AtendimentoFacade;
-import com.ufpr.tads.web2.facade.ClienteFacade;
 
 /**
  * Servlet implementation class AtendimentoServlet
@@ -49,8 +44,6 @@ public class AtendimentoServlet extends BeanServlet {
 	        rd.forward(request, response);
 	        
 	    }else {
-	    	List<Atendimento> lista;
-			List<Cliente> clientes = null;
 			Atendimento at;
 			RequestDispatcher rd;
 	    	
@@ -60,43 +53,25 @@ public class AtendimentoServlet extends BeanServlet {
 	    	
 	    	//Lista os atendimentos
 			case "list":
-				lista = AtendimentoFacade.searchAllAtendimentos();
-				request.setAttribute("lista", lista);
+				request.setAttribute("lista", AtendimentoFacade.searchAll());
 				rd = request.getRequestDispatcher("atendimentoListar.jsp");
 		        rd.forward(request, response);
 				break;
 			//Realiza um novo atendimento
-			case "make":
-				//Busca clientes
-				try {
-					clientes = ClienteFacade.selectAll();
-				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				//Busca ProdutoResource
-				List<Produto> produtos = AtendimentoFacade.searchAllProdutos();
-				//Busca tipos de atendimentos
-				List<TipoAtendimento> tiposAtendimento = AtendimentoFacade.searchAllTiposAtendimentos();
-				request.setAttribute("clientes", clientes);
-				request.setAttribute("ProdutoResource", produtos);
-				request.setAttribute("tiposAtendimento", tiposAtendimento);
+			case "form":
+				request.setAttribute("form", AtendimentoFacade.form());
 				rd = request.getRequestDispatcher("atendimento.jsp");
 		        rd.forward(request, response);
 		        break;
 			//Mostra os detalhes de um atendimento
 			case "new":
-				at = super.fillAtendimento(request);
-				AtendimentoFacade.insertAtendimento(at);
+				AtendimentoFacade.insert(super.fillAtendimento(request));
 				response.sendRedirect("portal.jsp");
 				break;
 			case "show":
 				int id = Integer.parseInt(request.getParameter("id"));
 				if(id > 0) {
-					at = AtendimentoFacade.buscarAtendimento(id);
+					at = AtendimentoFacade.search(id);
 					request.setAttribute("atendimento", at);
 					rd = request.getRequestDispatcher("atendimentoDetalhes.jsp");
 			        rd.forward(request, response);
@@ -104,9 +79,8 @@ public class AtendimentoServlet extends BeanServlet {
 				break;
 		    //Lista os atendimentos
 			default:
-				lista = AtendimentoFacade.searchAllAtendimentos();
+				request.setAttribute("lista", AtendimentoFacade.searchAll());
 				rd = request.getRequestDispatcher("atendimentoListar.jsp");
-				request.setAttribute("lista", lista);
 		        rd.forward(request, response);
 				break;
 			}

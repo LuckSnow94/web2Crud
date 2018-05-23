@@ -1,19 +1,41 @@
 package com.ufpr.tads.web2.facade;
 
 import com.ufpr.tads.web2.dao.AtendimentoDAO;
-import com.ufpr.tads.web2.dao.ProdutoDAO;
-import com.ufpr.tads.web2.dao.TipoAtendimentoDAO;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ufpr.tads.web2.beans.Atendimento;
+import com.ufpr.tads.web2.beans.Cliente;
 import com.ufpr.tads.web2.beans.Produto;
 import com.ufpr.tads.web2.beans.TipoAtendimento;
 
 public class AtendimentoFacade {
+	
+	public static ArrayList<List<?>> form() {
+		ArrayList<List<?>> form = new ArrayList<List<?>>();
+		try {
+			//Busca clientes
+			List<Cliente> clientes = ClienteFacade.selectAll();
+			form.add(clientes);
+			//Busca produtos
+			List<Produto> produtos = ProdutoFacade.searchAll();
+			List<TipoAtendimento> tiposAtendimento = TipoAtendimentoFacade.searchAll();
+			form.add(tiposAtendimento);
+			form.add(produtos);
+			//Busca tipos de atendimentos
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return form;		
+	}
 
-	public static List<Atendimento> searchAllAtendimentos() {
+	public static List<Atendimento> searchAll() {
 		AtendimentoDAO dao = new AtendimentoDAO();
 		try {
 			return dao.listarAtendimentos();
@@ -30,73 +52,11 @@ public class AtendimentoFacade {
 		return null;
 	}
 
-	public static List<Produto> searchAllProdutos() {
-		ProdutoDAO dao = new ProdutoDAO();
-		try {
-			return dao.listarProdutos();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+	public static Atendimento search(int id) {
+		return new AtendimentoDAO().buscarAtendimento(id);
 	}
 
-	public static List<TipoAtendimento> searchAllTiposAtendimentos() {
-		TipoAtendimentoDAO dao = new TipoAtendimentoDAO();
-		try {
-			return dao.listarTiposAtendimentos();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static Produto buscarProduto(int idProduto) {
-		try {
-			return new ProdutoDAO().buscarProduto(idProduto);
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static TipoAtendimento buscarTipoAtendimento(int idTipoAtendimento) {
-		try {
-			return new TipoAtendimentoDAO().buscarTipoAtendimento((idTipoAtendimento));
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static void insertAtendimento(Atendimento t) {
+	public static void insert(Atendimento t) {
 		try {
 			new AtendimentoDAO().adicionarAtendimento(t);
 		} catch (InstantiationException e) {
@@ -111,57 +71,7 @@ public class AtendimentoFacade {
 		}
 	}
 
-	public static Atendimento buscarAtendimento(int id) {
-		return new AtendimentoDAO().buscarAtendimento(id);
-	}
-
-	public static void insertProduto(String p) {
-		try {
-			new ProdutoDAO().adicionarProduto(p);
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public static void updateProduto(Produto p) {
-		try {
-			new ProdutoDAO().alterarProduto(p);
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public static void deleteProduto(int id) {
-		try {
-			new ProdutoDAO().deletarProduto(id);
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-
-	public static void solveAtendimento(int idAtendimento) {
+	public static void solve(int idAtendimento) {
 		try {
 			new AtendimentoDAO().resolverAtendimento(idAtendimento);
 		} catch (InstantiationException e) {

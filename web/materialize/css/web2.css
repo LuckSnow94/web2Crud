@@ -30,6 +30,11 @@ td, th{
     border-width: 2px;
 }
 
+.borda {
+	border-style: solid;
+    border-color: grey;
+    border-width: 2px;
+}
 /* fallback */
 @font-face {
   font-family: 'Material Icons';

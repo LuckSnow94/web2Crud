@@ -1,5 +1,6 @@
 package com.ufpr.tads.web2.ws;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -9,7 +10,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
@@ -17,14 +21,15 @@ import com.ufpr.tads.web2.beans.Atendimento;
 import com.ufpr.tads.web2.facade.AtendimentoFacade;
 
 @Path("atendimentos")
-public class AtendimentoResource {
+public class AtendimentoResource{
     @Context
     private UriInfo context;
-
+       
     /**
-     * Default constructor. 
+     * @see Application#Application()
      */
     public AtendimentoResource() {
+        super();
         // TODO Auto-generated constructor stub
     }
 
@@ -33,28 +38,89 @@ public class AtendimentoResource {
      * @return an instance of String
      */
     @GET
-    @Produces("application/json")
-    public Response getJson() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAtendimentos() {
     	//Retorna uma lista com todos os atendimentos
-     	//return AtendimentoFacade.searchAllAtendimentos();
-     	return Response.ok().build();
-         }
-    
+    	try {
+    		List<Atendimento> atendimentos = AtendimentoFacade.searchAll();
+    		GenericEntity<List<Atendimento>> lista = new GenericEntity<List<Atendimento>>(atendimentos) {};
+    		if(lista.getEntity() == null) {
+    			return Response
+    					.status(Response.Status.NO_CONTENT)
+    					.build();
+    		}else { 
+    			return Response
+    					.ok()
+    					.entity(lista)
+    					.build();
+    		}
+		} catch (Exception e) {
+			return Response
+					.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.build();
+		}
+    }
+
+    @GET
+    @Path("/form")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getForm() {
+    	//Retorna um formulário de atendimento
+    	try {
+    		GenericEntity<ArrayList<List<?>>> form = new GenericEntity<ArrayList<List<?>>>(AtendimentoFacade.form()) {};
+    		if(form.getEntity() == null) {
+    			return Response
+    					.status(Response.Status.NO_CONTENT)
+    					.build();
+    		}else { 
+    			return Response
+    					.ok()
+    					.entity(form)
+    					.build();
+    		}
+		} catch (Exception e) {
+			return Response
+					.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.build();
+		}
+    }
+
     @GET
     @Path("/{id}")
-    @Consumes("application/json")
-    @Produces("application/json")
-    public Atendimento getJson2(@PathParam("id") int idAtendimento) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAtendimento(@PathParam("id") int idAtendimento) {
     	//Retorna o atendimento de código (id)
-    	return AtendimentoFacade.buscarAtendimento(idAtendimento);
+    	try {
+    		Atendimento atendimento = AtendimentoFacade.search(idAtendimento);
+    		if(atendimento == null) {
+    			return Response
+    					.status(Response.Status.NOT_FOUND)
+    					.build();    			
+    		}else {
+    			return Response
+    					.ok()
+    					.entity(atendimento)
+    					.build();		    			
+    		}
+		} catch (Exception e) {
+			return Response
+					.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.build();
+		}
     }
 
     @POST
-    @Consumes("application/json")
-    public void postJson(Atendimento atendimento) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response postAtendimento(Atendimento atendimento) {
     	//Insere um novo atendimento
-    	AtendimentoFacade.insertAtendimento(atendimento);
-    }
+		try {
+			AtendimentoFacade.insert(atendimento);
+			return Response.ok().build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
     
     /**
      * PUT method for updating or creating an instance of AtendimentoResource
@@ -63,10 +129,15 @@ public class AtendimentoResource {
      */
     @PUT
     @Path("/resolve/{id}")
-    @Consumes("application/json")
-    public void putJson(@PathParam("id") int idAtendimento) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response putAtendimento(@PathParam("id") int idAtendimento) {
     	//Resolve o atendimento de código (idAtendimento)
-    	AtendimentoFacade.solveAtendimento(idAtendimento);
+    	try {
+    		AtendimentoFacade.solve(idAtendimento);
+    		return Response.ok().build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
     }
 
 }

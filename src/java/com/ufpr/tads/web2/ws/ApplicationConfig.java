@@ -29,8 +29,8 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+    	resources.add(com.ufpr.tads.web2.ws.AtendimentoResource.class);
         resources.add(com.ufpr.tads.web2.ws.ProdutoResource.class);
-        resources.add(com.ufpr.tads.web2.ws.AtendimentoResource.class);
     }
     
 }

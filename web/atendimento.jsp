@@ -54,7 +54,7 @@
 										<label>Cliente:</label> 
 										<select name="cliente" class="browser-default">
 											<option>Selecione um cliente</option>
-											<c:forEach items="${clientes}" var="cliente">
+											<c:forEach items="${form[0]}" var="cliente">
 												<option value="<c:out value="${cliente.idCliente}"/>">
 												<c:out value="${cliente.nomeCliente}" /></option>
 											</c:forEach>
@@ -64,7 +64,7 @@
 										<label>Tipo do atendimento:</label> 
 										<select name="tipoAtendimento" class="browser-default">
 											<option>Selecione</option>
-											<c:forEach items="${tiposAtendimento}" var="tipoAtendimento">
+											<c:forEach items="${form[1]}" var="tipoAtendimento">
 												<option value="<c:out value="${tipoAtendimento.idTipoAtendimento}"/>">
 												<c:out value="${tipoAtendimento.nomeTipoAtendimento}" /></option>
 											</c:forEach>
@@ -74,7 +74,7 @@
 										<label>Produto:</label> 
 										<select name="produto" class="browser-default">
 											<option>Selecione um produto</option>
-											<c:forEach items="${produtos}" var="produto">
+											<c:forEach items="${form[2]}" var="produto">
 												<option value="<c:out value="${produto.idProduto}"/>">
 												<c:out value="${produto.nomeProduto}" /></option>
 											</c:forEach>

@@ -12,12 +12,15 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import com.ufpr.tads.web2.beans.Produto;
-import com.ufpr.tads.web2.facade.AtendimentoFacade;
+import com.ufpr.tads.web2.facade.ProdutoFacade;
 
-@Path("produtos")
+@Path("/produtos")
 public class ProdutoResource extends Application {
     @Context
     private UriInfo context;
@@ -27,7 +30,6 @@ public class ProdutoResource extends Application {
      */
     public ProdutoResource() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     /**
@@ -35,26 +37,66 @@ public class ProdutoResource extends Application {
      * @return an instance of String
      */
     @GET
-    @Produces("application/json")
-    public List<Produto> getJson() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProdutos() {
         //Retorna uma lista com todos os produtos
-    	return AtendimentoFacade.searchAllProdutos();
+    	try {
+    		List<Produto> produtos = ProdutoFacade.searchAll();
+    		GenericEntity<List<Produto>> lista = new GenericEntity<List<Produto>>(produtos) {};
+    		if(lista.getEntity() == null)
+    			return Response
+    					.status(Response.Status.NO_CONTENT)
+    					.build();
+    		else 
+    			return Response
+    					.ok()
+    					.entity(lista)
+    					.build();    		
+    	}catch (Exception e) {
+			return Response
+					.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.build();
+		}
     }
 
     @GET
     @Path("/{id}")
-    @Consumes("application/json")
-    @Produces("application/json")
-    public Produto getJson(@PathParam("id") int id) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProduto(@PathParam("id") int id) {
     	//Retorna o produto de código (id)
-    	return AtendimentoFacade.buscarProduto(id);
+    	try {
+    		Produto produto = ProdutoFacade.search(id);
+    		if(produto == null) 
+    			return Response
+    					.status(Response.Status.NOT_FOUND)
+    					.build();
+    		else 
+    			return Response
+    					.ok()
+    					.entity(produto)
+    					.build();    		
+    	}catch (Exception e) {
+			return Response
+					.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.build();
+		}
     }
     
     @POST
-    @Consumes("application/json")
-    public void postJson(String nomeProduto) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response postProduto(String nomeProduto) {
     	//Insere um novo produto
-    	AtendimentoFacade.insertProduto(nomeProduto);
+    	try {
+    		ProdutoFacade.insert(nomeProduto);
+    		return Response
+    				.ok()
+    				.build();
+    	}catch (Exception e) {
+    		return Response
+					.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.build();
+		}
     }
     
     /**
@@ -64,18 +106,36 @@ public class ProdutoResource extends Application {
      */
     @PUT
     @Path("/{id}")
-    @Consumes("application/json")
-    public void putJson(@PathParam("id") int idProduto, String nomeProduto) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response putProduto(@PathParam("id") int idProduto, String nomeProduto) {
     	//Atualiza o produto de código (idProduto)
-    	AtendimentoFacade.updateProduto(new Produto(idProduto,nomeProduto));
+    	try {
+    		ProdutoFacade.update(new Produto(idProduto,nomeProduto));
+    		return Response
+    				.ok()
+    				.build();
+		} catch (Exception e) {
+			return Response
+					.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.build();
+		}
     }
     
     @DELETE
     @Path("/{id}")
-    @Consumes("application/json")
-    public void deleteJson(@PathParam("id") int id) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteProduto(@PathParam("id") int id) {
     	//Remove o produto de código (id)
-    	AtendimentoFacade.deleteProduto(id);
+    	try {
+    		ProdutoFacade.delete(id);
+    		return Response
+    				.ok()
+    				.build();    		
+		} catch (Exception e) {
+			return Response
+					.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.build();
+		}
     }
 
 }
